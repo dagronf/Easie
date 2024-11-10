@@ -1,24 +1,31 @@
-// swift-tools-version: 6.0
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version: 5.4
 
 import PackageDescription
 
+#if canImport(CoreGraphics)
+let deps: [PackageDescription.Package.Dependency] = [
+	.package(url: "https://github.com/dagronf/Bitmap", from: "1.4.0")
+]
+let testDeps: [PackageDescription.Target.Dependency] = ["EasingFunctionsKit", "Bitmap"]
+#else
+let deps: [PackageDescription.Package.Dependency] = []
+let testDeps: [PackageDescription.Target.Dependency] = ["EasingFunctionsKit"]
+#endif
+
 let package = Package(
-    name: "EasingFunctionsKit",
-    products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
-        .library(
-            name: "EasingFunctionsKit",
-            targets: ["EasingFunctionsKit"]),
-    ],
-    targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
-        .target(
-            name: "EasingFunctionsKit"),
-        .testTarget(
-            name: "EasingFunctionsKitTests",
-            dependencies: ["EasingFunctionsKit"]
-        ),
-    ]
+	name: "EasingFunctionsKit",
+	products: [
+		.library(
+			name: "EasingFunctionsKit",
+			targets: ["EasingFunctionsKit"]),
+	],
+	dependencies: deps,
+	targets: [
+		.target(
+			name: "EasingFunctionsKit"),
+		.testTarget(
+			name: "EasingFunctionsKitTests",
+			dependencies: testDeps
+		),
+	]
 )
