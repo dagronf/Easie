@@ -53,9 +53,9 @@ public func easeIn(_ type: EasingFunctionType = .cubic, at t: Double) -> Double 
 	case .quad: return t * t
 	case .quart: return t * t * t * t
 	case .expo: return (t == 0) ? 0.0 : pow(2.0, 10.0 * t - 10.0)
-	case .bounce: return EaseInBounce().value(at: t)
-	case .elastic: return EaseInElastic().value(at: t)
-	case .back: return EaseInBack().value(at: t)
+	case .bounce: return easeInBounce(at: t)
+	case .elastic: return easeInElastic(at: t)
+	case .back: return easeInBack(at: t)
 	}
 }
 

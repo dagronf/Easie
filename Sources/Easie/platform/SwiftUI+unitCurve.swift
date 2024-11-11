@@ -21,7 +21,7 @@
 import SwiftUI
 
 /// A SwiftUI `Path` containing a unit easing curve
-@available(macOS 10.15, *)
+@available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 public extension Path {
 	/// Create a path using a unit cirve
 	/// - Parameters:
@@ -35,7 +35,7 @@ public extension Path {
 }
 
 /// A SwiftUI `Shape` containing a unit easing curve
-@available(macOS 10.15, *)
+@available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
 public struct EasingCurve: Shape {
 	let curve: Easie.UnitCurve
 	let steps: Int

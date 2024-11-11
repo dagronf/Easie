@@ -24,7 +24,7 @@ import Foundation
 /// Ease in. Goes slightly backwards before moving forward
 ///   - t: A unit time value
 /// - Returns: The unit eased position
-public func easeInBack(_ t: Double) -> Double {
+public func easeInBack(at t: Double) -> Double {
 	let t = t.unitClamped()
 	let c1: Double = 1.70158
 	let c3: Double = c1 + 1
@@ -40,7 +40,7 @@ public struct EaseInBack: UnitCurve {
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	@inlinable public func value(at t: Double) -> Double { easeInBack(t) }
+	@inlinable public func value(at t: Double) -> Double { easeInBack(at: t) }
 }
 
 // MARK: - Ease Out
@@ -48,7 +48,7 @@ public struct EaseInBack: UnitCurve {
 /// Ease out. Overshoots then pulls back to 1.0
 /// - Parameter t: A unit time value
 /// - Returns: The unit eased position
-public func easeOutBack(_ t: Double) -> Double {
+public func easeOutBack(at t: Double) -> Double {
 	let c1: Double = 1.70158
 	let c3: Double = c1 + 1
 	let t = t.unitClamped()
@@ -64,7 +64,7 @@ public struct EaseOutBack: UnitCurve {
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	@inlinable public func value(at t: Double) -> Double { easeOutBack(t) }
+	@inlinable public func value(at t: Double) -> Double { easeOutBack(at: t) }
 }
 
 // MARK: - Ease In Ease Out
@@ -72,7 +72,7 @@ public struct EaseOutBack: UnitCurve {
 /// Ease in, ease out with overshoots at start and end
 /// - Parameter t: A unit time value
 /// - Returns: The unit eased position
-public func easeInEaseOutBack(_ t: Double) -> Double {
+public func easeInEaseOutBack(at t: Double) -> Double {
 	let t = t.unitClamped()
 	let c1: Double = 1.70158
 	let c2: Double = c1 * 1.525
@@ -93,5 +93,5 @@ public struct EaseInEaseOutBack: UnitCurve {
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	@inlinable public func value(at t: Double) -> Double { easeInEaseOutBack(t) }
+	@inlinable public func value(at t: Double) -> Double { easeInEaseOutBack(at: t) }
 }
