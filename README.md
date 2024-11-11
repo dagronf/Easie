@@ -1,7 +1,9 @@
-# Easing Function Kit (Easie)
+# Easing Functions (Easie)
 
-![License](https://img.shields.io/badge/License-MIT-apple)
+![tag](https://img.shields.io/github/v/tag/dagronf/Easie)
 ![Platform](https://img.shields.io/badge/Platforms-macOS%20|%20iOS%20|%20tvOS%20|%20watchOS%20|%20visionOS%20|%20Linux-lightgrey.svg)
+![License](https://img.shields.io/badge/License-MIT-apple)
+![Build](https://img.shields.io/github/actions/workflow/status/dagronf/Easie/swift.yml)
 
 A collection of cross-platform easing functions written in Swift.
 
