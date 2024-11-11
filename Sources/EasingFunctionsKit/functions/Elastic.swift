@@ -19,57 +19,70 @@
 
 import Foundation
 
+// MARK: - Ease In
+
 /// Ease in elastic curve
 public struct EaseInElastic: UnitCurve {
-	private static let c4: Double = (2.0 * Double.pi) / 3.0
 	/// The title for the easing function
 	public var title: String { "easeInElastic" }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	public func value(at t: Double) -> Double {
-		let t = t.unitClamped()
-		if t == 0 { return 0 }
-		if t == 1 { return 1 }
-		return -pow(2, 10 * t - 10) * sin((t * 10 - 10.75) * Self.c4)
-	}
+	@inlinable public func value(at t: Double) -> Double { easeInElastic(at: t) }
 }
+
+/// Ease in elastic curve
+public func easeInElastic(at t: Double) -> Double {
+	let t = t.unitClamped()
+	if t == 0 { return 0 }
+	if t == 1 { return 1 }
+	let c4: Double = (2.0 * Double.pi) / 3.0
+	return -pow(2, 10 * t - 10) * sin((t * 10 - 10.75) * c4)
+}
+
+// MARK: - Ease Out
 
 /// Ease out elastic curve
 struct EaseOutElastic: UnitCurve {
-	private static let c4: Double = (2.0 * Double.pi) / 3.0
 	/// The title for the easing function
 	public var title: String { "easeOutElastic" }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	public func value(at t: Double) -> Double {
-		let t = t.unitClamped()
-		if t == 0 { return 0 }
-		if t == 1 { return 1 }
-		return pow(2, -10 * t) * sin((t * 10 - 0.75) * Self.c4) + 1.0
-	}
+	@inlinable public func value(at t: Double) -> Double { easeOutElastic(at: t) }
 }
+
+public func easeOutElastic(at t: Double) -> Double {
+	let t = t.unitClamped()
+	if t == 0 { return 0 }
+	if t == 1 { return 1 }
+	let c4: Double = (2.0 * Double.pi) / 3.0
+	return pow(2, -10 * t) * sin((t * 10 - 0.75) * c4) + 1.0
+}
+
+// MARK: - Ease In Ease Out
 
 /// Ease in, ease out elastic curve
 struct EaseInEaseOutElastic: UnitCurve {
-	private static let c5: Double = (2.0 * Double.pi) / 4.5
 	/// The title for the easing function
 	public var title: String { "easeInEaseOutElastic" }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	public func value(at t: Double) -> Double {
-		let t = t.unitClamped()
-		switch t {
-		case 0: return 0
-		case 1: return 1
-		case let t where t < 0.5:
-			return -(pow(2, 20 * t - 10) * sin((20 * t - 11.125) * Self.c5)) / 2
-		case let t where t >= 0.5:
-			return (pow(2, -20 * t + 10) * sin((20 * t - 11.125) * Self.c5)) / 2 + 1
-		default:
-			fatalError()
-		}
+	@inlinable public func value(at t: Double) -> Double { easeInEaseOutElastic(at: t) }
+}
+
+public func easeInEaseOutElastic(at t: Double) -> Double {
+	let t = t.unitClamped()
+	let c5: Double = (2.0 * Double.pi) / 4.5
+	switch t {
+	case 0: return 0
+	case 1: return 1
+	case let t where t < 0.5:
+		return -(pow(2, 20 * t - 10) * sin((20 * t - 11.125) * c5)) / 2
+	case let t where t >= 0.5:
+		return (pow(2, -20 * t + 10) * sin((20 * t - 11.125) * c5)) / 2 + 1
+	default:
+		fatalError()
 	}
 }

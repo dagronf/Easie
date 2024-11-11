@@ -48,8 +48,7 @@ public struct CubicBezier: UnitCurve {
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
 	public func value(at t: Double) -> Double {
-		assert(t.isInRange(0 ... 1))
-		return self.bezier.point(at: t.unitClamped()).y
+		self.bezier.point(at: t.unitClamped()).y
 	}
 }
 

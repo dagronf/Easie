@@ -55,7 +55,7 @@ public struct Jump: UnitCurve, Sendable {
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
 	public func value(at t: Double) -> Double {
-		assert(t.isInRange(0 ... 1))
+		let t = t.unitClamped()
 
 		// Which chunk does the value fall in?
 		let which = (t / chunkSize).rounded(.towardZero)

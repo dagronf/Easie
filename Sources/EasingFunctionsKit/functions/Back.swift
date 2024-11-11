@@ -19,50 +19,62 @@
 
 import Foundation
 
+// MARK: - Ease In
+
 public struct EaseInBack: UnitCurve {
-	private static let c1: Double = 1.70158
-	private static let c3: Double = c1 + 1
 	/// The title for the easing function
 	public var title: String { "easeInBack" }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	public func value(at t: Double) -> Double {
-		let t = t.unitClamped()
-		return Self.c3 * t * t * t - Self.c1 * t * t
-	}
+	@inlinable public func value(at t: Double) -> Double { easeInBack(t) }
 }
 
+public func easeInBack(_ t: Double) -> Double {
+	let t = t.unitClamped()
+	let c1: Double = 1.70158
+	let c3: Double = c1 + 1
+	return c3 * t * t * t - c1 * t * t
+}
+
+// MARK: - Ease Out
+
 public struct EaseOutBack: UnitCurve {
-	private static let c1: Double = 1.70158
-	private static let c3: Double = c1 + 1
 	/// The title for the easing function
 	public var title: String { "easeOutBack" }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	public func value(at t: Double) -> Double {
-		let t = t.unitClamped()
-		return 1 + Self.c3 * pow(t - 1, 3) + Self.c1 * pow(t - 1, 2)
-	}
+	@inlinable public func value(at t: Double) -> Double { easeOutBack(t) }
 }
+
+public func easeOutBack(_ t: Double) -> Double {
+	let c1: Double = 1.70158
+	let c3: Double = c1 + 1
+	let t = t.unitClamped()
+	return 1 + c3 * pow(t - 1, 3) + c1 * pow(t - 1, 2)
+}
+
+// MARK: - Ease In Ease Out
 
 /// https://easings.net/#easeInOutBack
 public struct EaseInEaseOutBack: UnitCurve {
-	private static let c1: Double = 1.70158
-	private static let c2: Double = c1 * 1.525
 	/// The title for the easing function
 	public var title: String { "easeInEaseOutBack" }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	public func value(at t: Double) -> Double {
-		let t = t.unitClamped()
-		if t < 0.5 {
-			return (pow(2.0 * t, 2.0) * ((Self.c2 + 1.0) * 2.0 * t - Self.c2)) / 2.0
-		}
-		else {
-			return (pow(2.0 * t - 2.0, 2.0) * ((Self.c2 + 1.0) * (t * 2.0 - 2.0) + Self.c2) + 2.0) / 2.0
-		}
+	@inlinable public func value(at t: Double) -> Double { easeInEaseOutBack(t) }
+}
+
+public func easeInEaseOutBack(_ t: Double) -> Double {
+	let t = t.unitClamped()
+	let c1: Double = 1.70158
+	let c2: Double = c1 * 1.525
+	if t < 0.5 {
+		return (pow(2.0 * t, 2.0) * ((c2 + 1.0) * 2.0 * t - c2)) / 2.0
+	}
+	else {
+		return (pow(2.0 * t - 2.0, 2.0) * ((c2 + 1.0) * (t * 2.0 - 2.0) + c2) + 2.0) / 2.0
 	}
 }

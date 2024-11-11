@@ -19,6 +19,8 @@
 
 import Foundation
 
+// MARK: - Ease In
+
 /// Ease in with bounce
 public struct EaseInBounce: UnitCurve {
 	private static let easeOutBounce = EaseOutBounce()
@@ -27,42 +29,52 @@ public struct EaseInBounce: UnitCurve {
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	public func value(at t: Double) -> Double {
-		let t = t.unitClamped()
-		return 1.0 - Self.easeOutBounce.value(at: 1.0 - t)
-	}
+	@inlinable public func value(at t: Double) -> Double { easeInBounce(at: t) }
 }
+
+public func easeInBounce(at t: Double) -> Double {
+	let t = t.unitClamped()
+	return 1.0 - easeOutBounce(at: 1.0 - t)
+}
+
+// MARK: - Ease Out
 
 /// Ease out with bounce
 public struct EaseOutBounce: UnitCurve {
-	private static let n1: Double = 7.5625
-	private static let d1: Double = 2.75
 	/// The title for the easing function
 	public var title: String { "easeOutBounce" }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	public func value(at t: Double) -> Double {
-		let t = t.unitClamped()
-		if t == 0 { return 0 }
-		if t == 1 { return 1 }
-		if t < (1.0 / Self.d1) {
-			return Self.n1 * t * t
-		}
-		else if t < (2.0 / Self.d1) {
-			let tt = t - (1.5 / Self.d1)
-			return Self.n1 * tt * tt + 0.75
-		}
-		else if t < (2.5 / Self.d1) {
-			let tt = t - (2.25 / Self.d1)
-			return Self.n1 * tt * tt + 0.9375
-		}
-		else {
-			let tt = t - (2.625 / Self.d1)
-			return Self.n1 * (tt / Self.d1) * tt + 0.984375
-		}
+	@inlinable public func value(at t: Double) -> Double { easeOutBounce(at: t) }
+}
+
+public func easeOutBounce(at t: Double) -> Double {
+	let t = t.unitClamped()
+	if t == 0 { return 0 }
+	if t == 1 { return 1 }
+
+	let n1: Double = 7.5625
+	let d1: Double = 2.75
+
+	if t < (1.0 / d1) {
+		return n1 * t * t
+	}
+	else if t < (2.0 / d1) {
+		let tt = t - (1.5 / d1)
+		return n1 * tt * tt + 0.75
+	}
+	else if t < (2.5 / d1) {
+		let tt = t - (2.25 / d1)
+		return n1 * tt * tt + 0.9375
+	}
+	else {
+		let tt = t - (2.625 / d1)
+		return n1 * (tt / d1) * tt + 0.984375
 	}
 }
+
+// MARK: - Ease In Ease Out
 
 /// Ease in, ease out with bounce
 public struct EaseInEaseOutBounce: UnitCurve {
@@ -72,10 +84,13 @@ public struct EaseInEaseOutBounce: UnitCurve {
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	public func value(at t: Double) -> Double {
-		let t = t.unitClamped()
-		return (t < 0.5)
-			? (1.0 - Self.easeOutBounce.value(at: 1.0 - 2.0 * t)) / 2.0
-			: (1.0 + Self.easeOutBounce.value(at: 2.0 * t - 1.0)) / 2.0
-	}
+	@inlinable public func value(at t: Double) -> Double { easeInEaseOutBounce(at: t) }
+}
+
+/// An in-out bounce unit function
+public func easeInEaseOutBounce(at t: Double) -> Double {
+	let t = t.unitClamped()
+	return (t < 0.5)
+		? (1.0 - easeOutBounce(at: 1.0 - 2.0 * t)) / 2.0
+		: (1.0 + easeOutBounce(at: 2.0 * t - 1.0)) / 2.0
 }
