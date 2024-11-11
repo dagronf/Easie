@@ -70,7 +70,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 			Jump(.jumpBoth, steps: 3),
 		]
 
-		let font = Font(name: "Menlo", size: 24)!
+		let font = Font.systemFont(ofSize: 24)
 
 		for type in types {
 
@@ -209,7 +209,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 
 		let fontDetails: [NSAttributedString.Key: Any] = [
 			.foregroundColor: CGColor(gray: 0.5, alpha: 1),
-			.font: Font(name: "Menlo", size: 11)!
+			.font: Font.systemFont(ofSize: 11)
 		]
 
 		var allCurves = AllEasingCurves
@@ -290,7 +290,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 
 		let fontDetails: [NSAttributedString.Key: Any] = [
 			.foregroundColor: CGColor(gray: 0, alpha: 1),
-			.font: Font(name: "Menlo", size: 11)!
+			.font: Font.systemFont(ofSize: 11)
 		]
 
 		var allCurves = AllEasingCurves
