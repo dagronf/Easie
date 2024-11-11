@@ -17,14 +17,14 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/// A constant rate of interpolation
+/// A curve defined by linear interpolation
 public struct Linear: UnitCurve {
 	/// The interpolation points
 	public let progressValues: [Double]
 	/// The number of interpolation points
 	public let count: Int
 
-	/// Create a direct transfer function
+	/// Create a direct transfer function (position == t)
 	public init() {
 		self.progressValues = []
 		self.count = 0

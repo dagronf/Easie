@@ -5,7 +5,7 @@
 ![License](https://img.shields.io/badge/License-MIT-apple)
 ![Build](https://img.shields.io/github/actions/workflow/status/dagronf/Easie/swift.yml)
 
-A collection of cross-platform easing functions written in Swift.
+A collection of cross-platform easing functions written in Swift with no dependencies on SwiftUI or CoreGraphics.
 
 ## Simple example
 
@@ -39,8 +39,27 @@ let unitY = unitCurve.value(at: 0.25)
 ```
 
 ```swift
-// An ease-out curve
+// An ease-in-ease-out elastic curve
 let unitY = easeInEaseOutElastic(at: 0.68)
+```
+
+## Cubic Types
+
+A Cubic bezier curve with the first point `P0` as (0.0, 0.0) and last point `P3` as (1.0, 1.0). 
+
+A cubic Bézier curve is defined by four points: P0, P1, P2, and P3. The points P0 and P3 represent the start and the end of the curve
+
+<img src="Art/images/cubic-bezier-overview.png" />
+
+Cubic Bézier curves with the P1 or P2 coordinate outside the [0, 1] range can cause the value to go farther than the
+final state and then return.
+
+<img src="Art/images/path-CubicBezier(0.1,0.6,0.7,0.2).png" />
+<img src="Art/images/path-CubicBezier(0.3,0.2,0.2,1.4).png" />
+
+```swift
+let unitCurve = CubicBezierCurve(x1: 0.1, y1: 0.6, x2: 0.7, y2: 0.2)
+let unitY = unitCurve.value(at: 0.25)
 ```
 
 ## Linear Types
@@ -93,8 +112,8 @@ let unitY = jump.value(at: 0.68)
 
 ## References
 
-* [Robert Penner](http://robertpenner.com/easing/) ([archive.org](https://web.archive.org/web/20241108204417/http://robertpenner.com/easing/))
-* [Nic Mulvaney](https://nicmulvaney.com/easing) ([archive.org](https://web.archive.org/web/20240926061450/https://nicmulvaney.com/easing))
+* [Robert Penner](http://robertpenner.com/easing/) [archived](https://web.archive.org/web/20241108204417/http://robertpenner.com/easing)
+* [Nic Mulvaney](https://nicmulvaney.com/easing) [archived](https://web.archive.org/web/20240926061450/https://nicmulvaney.com/easing)
 * [Steps easing functions @ Mozilla](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function#steps_easing_function)
 * [Cubic Bézier easing functions @ Mozilla](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function#cubic_bézier_easing_function)
 

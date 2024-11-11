@@ -21,23 +21,11 @@ import Foundation
 
 // MARK: - Ease In
 
-/// Ease in elastic curve
-public struct EaseInElastic: UnitCurve {
-	/// The title for the easing function
-	public var title: String { "easeInElastic" }
-	/// Retrieve the unit value for the function for the given time
-	/// - Parameter t: The time value, 0.0 ... 1.0
-	/// - Returns: The unit value of the function at the given time
-
-	/// Create
-	public init() { }
-	/// Retrieve the unit value for the function for the given time
-	/// - Parameter t: The time value, 0.0 ... 1.0
-	/// - Returns: The unit value of the function at the given time
-	@inlinable public func value(at t: Double) -> Double { easeInElastic(at: t) }
-}
-
-/// Ease in elastic curve
+/// Ease in with elasticity
+/// - Parameters:
+///   - type: The easing type
+///   - t: A unit time value
+/// - Returns: The unit eased position
 public func easeInElastic(at t: Double) -> Double {
 	let t = t.unitClamped()
 	if t == 0 { return 0 }
@@ -46,21 +34,25 @@ public func easeInElastic(at t: Double) -> Double {
 	return -pow(2, 10 * t - 10) * sin((t * 10 - 10.75) * c4)
 }
 
-// MARK: - Ease Out
-
-/// Ease out elastic curve
-struct EaseOutElastic: UnitCurve {
+/// Ease in with elasticity
+public struct EaseInElastic: UnitCurve {
 	/// The title for the easing function
-	public var title: String { "easeOutElastic" }
-
+	public var title: String { "easeInElastic" }
 	/// Create
 	public init() { }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	@inlinable public func value(at t: Double) -> Double { easeOutElastic(at: t) }
+	@inlinable public func value(at t: Double) -> Double { easeInElastic(at: t) }
 }
 
+// MARK: - Ease Out
+
+/// Ease out with elasticity
+/// - Parameters:
+///   - type: The easing type
+///   - t: A unit time value
+/// - Returns: The unit eased position
 public func easeOutElastic(at t: Double) -> Double {
 	let t = t.unitClamped()
 	if t == 0 { return 0 }
@@ -69,21 +61,25 @@ public func easeOutElastic(at t: Double) -> Double {
 	return pow(2, -10 * t) * sin((t * 10 - 0.75) * c4) + 1.0
 }
 
-// MARK: - Ease In Ease Out
-
-/// Ease in, ease out elastic curve
-struct EaseInEaseOutElastic: UnitCurve {
+/// Ease out with elasticity
+struct EaseOutElastic: UnitCurve {
 	/// The title for the easing function
-	public var title: String { "easeInEaseOutElastic" }
-
+	public var title: String { "easeOutElastic" }
 	/// Create
 	public init() { }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	@inlinable public func value(at t: Double) -> Double { easeInEaseOutElastic(at: t) }
+	@inlinable public func value(at t: Double) -> Double { easeOutElastic(at: t) }
 }
 
+// MARK: - Ease In Ease Out
+
+/// Ease in ease out with elasticity
+/// - Parameters:
+///   - type: The easing type
+///   - t: A unit time value
+/// - Returns: The unit eased position
 public func easeInEaseOutElastic(at t: Double) -> Double {
 	let t = t.unitClamped()
 	let c5: Double = (2.0 * Double.pi) / 4.5
@@ -97,4 +93,17 @@ public func easeInEaseOutElastic(at t: Double) -> Double {
 	default:
 		fatalError()
 	}
+}
+
+/// Ease in ease out with elasticity
+struct EaseInEaseOutElastic: UnitCurve {
+	/// The title for the easing function
+	public var title: String { "easeInEaseOutElastic" }
+
+	/// Create
+	public init() { }
+	/// Retrieve the unit value for the function for the given time
+	/// - Parameter t: The time value, 0.0 ... 1.0
+	/// - Returns: The unit value of the function at the given time
+	@inlinable public func value(at t: Double) -> Double { easeInEaseOutElastic(at: t) }
 }

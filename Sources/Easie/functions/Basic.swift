@@ -19,9 +19,9 @@
 
 import Foundation
 
-/// Available built-in curve types
-public enum EasingFunctionType: String, Sendable {
-	/// A linear diagonal transfer curve
+/// Available built-in easing curve types
+public enum EasingFunctionType: String, Sendable, Identifiable, CaseIterable {
+	public var id: RawValue { rawValue }
 	case linear
 	case sine
 	case cubic
@@ -38,22 +38,10 @@ public enum EasingFunctionType: String, Sendable {
 // MARK: - Ease In
 
 /// Ease in
-public struct EaseIn: UnitCurve {
-	/// The easing type
-	public let type: EasingFunctionType
-	/// Create an easing function
-	public init(type: EasingFunctionType = .cubic) {
-		self.type = type
-	}
-
-	/// The title for the easing function
-	public var title: String { "easeIn(\(self.type))" }
-	/// Retrieve the unit value for the function for the given time
-	/// - Parameter t: The time value, 0.0 ... 1.0
-	/// - Returns: The unit value of the function at the given time
-	@inlinable public func value(at t: Double) -> Double { easeIn(self.type, at: t) }
-}
-
+/// - Parameters:
+///   - type: The easing type
+///   - t: A unit time value
+/// - Returns: The unit eased position
 public func easeIn(_ type: EasingFunctionType = .cubic, at t: Double) -> Double {
 	let t = t.unitClamped()
 	switch type {
@@ -71,25 +59,29 @@ public func easeIn(_ type: EasingFunctionType = .cubic, at t: Double) -> Double 
 	}
 }
 
-// MARK: - Ease Out
-
-/// Ease out
-public struct EaseOut: UnitCurve {
+/// Ease in
+public struct EaseIn: UnitCurve {
 	/// The easing type
 	public let type: EasingFunctionType
 	/// Create an easing function
 	public init(type: EasingFunctionType = .cubic) {
 		self.type = type
 	}
-
 	/// The title for the easing function
-	public var title: String { "easeOut(\(self.type))" }
+	public var title: String { "easeIn(\(self.type))" }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	@inlinable public func value(at t: Double) -> Double { easeOut(self.type, at: t) }
+	@inlinable public func value(at t: Double) -> Double { easeIn(self.type, at: t) }
 }
 
+// MARK: - Ease Out
+
+/// Ease out
+/// - Parameters:
+///   - type: The easing type
+///   - t: A unit time value
+/// - Returns: The unit eased position
 public func easeOut(_ type: EasingFunctionType = .cubic, at t: Double) -> Double {
 	let t = t.unitClamped()
 	switch type {
@@ -107,25 +99,29 @@ public func easeOut(_ type: EasingFunctionType = .cubic, at t: Double) -> Double
 	}
 }
 
-// MARK: - Ease In Ease Out
-
-/// Ease in ease out
-public struct EaseInEaseOut: UnitCurve {
+/// Ease out
+public struct EaseOut: UnitCurve {
 	/// The easing type
 	public let type: EasingFunctionType
 	/// Create an easing function
 	public init(type: EasingFunctionType = .cubic) {
 		self.type = type
 	}
-
 	/// The title for the easing function
-	public var title: String { "easeInEaseOut(\(self.type))" }
+	public var title: String { "easeOut(\(self.type))" }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
-	@inlinable public func value(at t: Double) -> Double { easeInEaseOut(self.type, at: t) }
+	@inlinable public func value(at t: Double) -> Double { easeOut(self.type, at: t) }
 }
 
+// MARK: - Ease In Ease Out
+
+/// Ease in, ease out
+/// - Parameters:
+///   - type: The easing type
+///   - t: A unit time value
+/// - Returns: The unit eased position
 public func easeInEaseOut(_ type: EasingFunctionType = .cubic, at t: Double) -> Double {
 	let t = t.unitClamped()
 	switch type {
@@ -158,4 +154,20 @@ public func easeInEaseOut(_ type: EasingFunctionType = .cubic, at t: Double) -> 
 	case .back:
 		return EaseInEaseOutBack().value(at: t)
 	}
+}
+
+/// Ease in ease out
+public struct EaseInEaseOut: UnitCurve {
+	/// The easing type
+	public let type: EasingFunctionType
+	/// Create an easing function
+	public init(type: EasingFunctionType = .cubic) {
+		self.type = type
+	}
+	/// The title for the easing function
+	public var title: String { "easeInEaseOut(\(self.type))" }
+	/// Retrieve the unit value for the function for the given time
+	/// - Parameter t: The time value, 0.0 ... 1.0
+	/// - Returns: The unit value of the function at the given time
+	@inlinable public func value(at t: Double) -> Double { easeInEaseOut(self.type, at: t) }
 }

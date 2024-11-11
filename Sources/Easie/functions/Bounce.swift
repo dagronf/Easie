@@ -22,11 +22,18 @@ import Foundation
 // MARK: - Ease In
 
 /// Ease in with bounce
+/// - Parameter t: A unit time value
+/// - Returns: The unit eased position
+public func easeInBounce(at t: Double) -> Double {
+	let t = t.unitClamped()
+	return 1.0 - easeOutBounce(at: 1.0 - t)
+}
+
+/// Ease in with bounce
 public struct EaseInBounce: UnitCurve {
 	private static let easeOutBounce = EaseOutBounce()
 	/// The title for the easing function
 	public var title: String { "easeInBounce" }
-
 	/// Create
 	public init() { }
 	/// Retrieve the unit value for the function for the given time
@@ -35,26 +42,11 @@ public struct EaseInBounce: UnitCurve {
 	@inlinable public func value(at t: Double) -> Double { easeInBounce(at: t) }
 }
 
-public func easeInBounce(at t: Double) -> Double {
-	let t = t.unitClamped()
-	return 1.0 - easeOutBounce(at: 1.0 - t)
-}
-
 // MARK: - Ease Out
 
 /// Ease out with bounce
-public struct EaseOutBounce: UnitCurve {
-	/// The title for the easing function
-	public var title: String { "easeOutBounce" }
-
-	/// Create
-	public init() { }
-	/// Retrieve the unit value for the function for the given time
-	/// - Parameter t: The time value, 0.0 ... 1.0
-	/// - Returns: The unit value of the function at the given time
-	@inlinable public func value(at t: Double) -> Double { easeOutBounce(at: t) }
-}
-
+/// - Parameter t: A unit time value
+/// - Returns: The unit eased position
 public func easeOutBounce(at t: Double) -> Double {
 	let t = t.unitClamped()
 	if t == 0 { return 0 }
@@ -80,26 +72,39 @@ public func easeOutBounce(at t: Double) -> Double {
 	}
 }
 
+/// Ease out with bounce
+public struct EaseOutBounce: UnitCurve {
+	/// The title for the easing function
+	public var title: String { "easeOutBounce" }
+	/// Create
+	public init() { }
+	/// Retrieve the unit value for the function for the given time
+	/// - Parameter t: The time value, 0.0 ... 1.0
+	/// - Returns: The unit value of the function at the given time
+	@inlinable public func value(at t: Double) -> Double { easeOutBounce(at: t) }
+}
+
 // MARK: - Ease In Ease Out
+
+/// Ease in. ease out with bounce
+/// - Parameter t: A unit time value
+/// - Returns: The unit eased position
+public func easeInEaseOutBounce(at t: Double) -> Double {
+	let t = t.unitClamped()
+	return (t < 0.5)
+		? (1.0 - easeOutBounce(at: 1.0 - 2.0 * t)) / 2.0
+		: (1.0 + easeOutBounce(at: 2.0 * t - 1.0)) / 2.0
+}
 
 /// Ease in, ease out with bounce
 public struct EaseInEaseOutBounce: UnitCurve {
 	private static let easeOutBounce = EaseOutBounce()
 	/// The title for the easing function
 	public var title: String { "easeInEaseOutBounce" }
-
 	/// Create
 	public init() { }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
 	@inlinable public func value(at t: Double) -> Double { easeInEaseOutBounce(at: t) }
-}
-
-/// An in-out bounce unit function
-public func easeInEaseOutBounce(at t: Double) -> Double {
-	let t = t.unitClamped()
-	return (t < 0.5)
-		? (1.0 - easeOutBounce(at: 1.0 - 2.0 * t)) / 2.0
-		: (1.0 + easeOutBounce(at: 2.0 * t - 1.0)) / 2.0
 }

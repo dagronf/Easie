@@ -17,42 +17,41 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if canImport(CoreGraphics)
+#if canImport(SwiftUI)
+import SwiftUI
 
-import CoreGraphics
-import Foundation
-
-public enum CGGradientErrors: Error {
-	case cannotCreateGradient
+/// A SwiftUI `Path` containing a unit easing curve
+@available(macOS 10.15, *)
+public extension Path {
+	/// Create a path using a unit cirve
+	/// - Parameters:
+	///   - curve: The unit curve definition
+	///   - size: The path size
+	///   - steps: The number of steps to use when approximating the curve
+	init(_ curve: Easie.UnitCurve, size: CGSize, steps: Int) {
+		let path = CGPath.build(curve, size: size, steps: steps, isFlipped: true)
+		self.init(path)
+	}
 }
 
-public extension CGGradient {
-	/// Build a gradient between two colors using a curve
+/// A SwiftUI `Shape` containing a unit easing curve
+@available(macOS 10.15, *)
+public struct EasingCurve: Shape {
+	let curve: Easie.UnitCurve
+	let steps: Int
+
+	/// Create a Shape with a unit curve
 	/// - Parameters:
-	///   - color1: First color
-	///   - color2: Second color
-	///   - curve: The unit curve to apply
-	///   - steps: The number of steps to use when creating the gradient
-	/// - Returns: A new gradient object
-	static func build(
-		from color1: CGColor,
-		to color2: CGColor,
-		curve: UnitCurve,
-		steps: Int = 10
-	) throws -> CGGradient {
-		let steps = stride(from: 0.0, to: 1.0, by: 1.0 / Double(steps))
-		let colors = try steps.map { x in
-			try color1.mix(with: color2, by: curve.value(at: x))
-		}
-		guard let gradient = CGGradient(
-			colorsSpace: nil,
-			colors: colors as CFArray,
-			locations: steps.map { CGFloat($0) }
-		)
-		else {
-			throw CGGradientErrors.cannotCreateGradient
-		}
-		return gradient
+	///   - curve: The unit curve definition
+	///   - steps: The number of steps to use when approximating the curve
+	public init(curve: Easie.UnitCurve, steps: Int) {
+		self.curve = curve
+		self.steps = steps
+	}
+
+	/// Describes this shape as a path within a rectangular frame of reference.
+	public func path(in rect: CGRect) -> Path {
+		Path(CGPath.build(self.curve, size: rect.size, steps: self.steps, isFlipped: true))
 	}
 }
 

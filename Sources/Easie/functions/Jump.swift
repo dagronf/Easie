@@ -34,9 +34,10 @@ public struct Jump: UnitCurve, Sendable {
 		case jumpBoth
 	}
 
-	public let steps: Int
-	public let jumpType: JumpType
+	private let steps: Int
+	private let jumpType: JumpType
 	private let chunkSize: Double
+	
 	/// The title for the easing function
 	public var title: String { "jump-\(self.jumpType)-\(self.steps)" }
 
