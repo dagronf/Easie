@@ -1,9 +1,9 @@
-# Easing Function Kit
+# Easing Function Kit (Easie)
 
 ![License](https://img.shields.io/badge/License-MIT-apple)
 ![Platform](https://img.shields.io/badge/Platforms-macOS%20|%20iOS%20|%20tvOS%20|%20watchOS%20|%20visionOS%20|%20Linux-lightgrey.svg)
 
-A collection of easing functions written in Swift.
+A collection of cross-platform easing functions written in Swift.
 
 ## Simple example
 
@@ -38,8 +38,7 @@ let unitY = unitCurve.value(at: 0.25)
 
 ```swift
 // An ease-out curve
-let unitCurve = EaseInEaseOutElastic()
-let unitY = unitCurve.value(at: 0.68)
+let unitY = easeInEaseOutElastic(at: 0.68)
 ```
 
 ## Linear Types

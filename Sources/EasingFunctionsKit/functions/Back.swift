@@ -57,7 +57,6 @@ public func easeOutBack(_ t: Double) -> Double {
 
 // MARK: - Ease In Ease Out
 
-/// https://easings.net/#easeInOutBack
 public struct EaseInEaseOutBack: UnitCurve {
 	/// The title for the easing function
 	public var title: String { "easeInEaseOutBack" }
@@ -67,6 +66,7 @@ public struct EaseInEaseOutBack: UnitCurve {
 	@inlinable public func value(at t: Double) -> Double { easeInEaseOutBack(t) }
 }
 
+/// Used for the effect of backwards easing in and out
 public func easeInEaseOutBack(_ t: Double) -> Double {
 	let t = t.unitClamped()
 	let c1: Double = 1.70158
