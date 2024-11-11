@@ -21,6 +21,22 @@ jobs:
       - name: Run tests on iOS
         run: xcodebuild -scheme Easie test -destination "platform=iOS Simulator,name=iPhone SE (3rd generation),OS=latest"
 
+  watchos_tests:
+    name: Unit tests on watchOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run tests on watchOS
+        run: xcodebuild -scheme Easie test -destination "platform=watchOS Simulator,name=Apple Watch Series 10 (42mm),OS=latest"
+
+  tvos_tests:
+    name: Unit tests on tvOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run tests on tvOS
+        run: xcodebuild -scheme Easie test -destination "platform=tvOS Simulator,name=Apple TV 4K (3rd generation),OS=latest"
+
   ubuntu_tests:
     name: Unit tests on Ubuntu
     runs-on: ubuntu-latest
