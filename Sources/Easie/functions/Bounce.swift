@@ -26,6 +26,9 @@ public struct EaseInBounce: UnitCurve {
 	private static let easeOutBounce = EaseOutBounce()
 	/// The title for the easing function
 	public var title: String { "easeInBounce" }
+
+	/// Create
+	public init() { }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
@@ -43,6 +46,9 @@ public func easeInBounce(at t: Double) -> Double {
 public struct EaseOutBounce: UnitCurve {
 	/// The title for the easing function
 	public var title: String { "easeOutBounce" }
+
+	/// Create
+	public init() { }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
@@ -81,6 +87,9 @@ public struct EaseInEaseOutBounce: UnitCurve {
 	private static let easeOutBounce = EaseOutBounce()
 	/// The title for the easing function
 	public var title: String { "easeInEaseOutBounce" }
+
+	/// Create
+	public init() { }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time

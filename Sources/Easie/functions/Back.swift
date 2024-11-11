@@ -24,6 +24,9 @@ import Foundation
 public struct EaseInBack: UnitCurve {
 	/// The title for the easing function
 	public var title: String { "easeInBack" }
+
+	/// Create
+	public init() { }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
@@ -42,6 +45,9 @@ public func easeInBack(_ t: Double) -> Double {
 public struct EaseOutBack: UnitCurve {
 	/// The title for the easing function
 	public var title: String { "easeOutBack" }
+
+	/// Create
+	public init() { }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
@@ -60,6 +66,9 @@ public func easeOutBack(_ t: Double) -> Double {
 public struct EaseInEaseOutBack: UnitCurve {
 	/// The title for the easing function
 	public var title: String { "easeInEaseOutBack" }
+
+	/// Create
+	public init() { }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time

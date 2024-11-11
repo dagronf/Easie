@@ -29,23 +29,24 @@ extension CGPath {
 	///   - size: The size of the resulting path
 	///   - steps: The number of steps to take along the curve when building the path
 	/// - Returns: CGPath
-	public static func build(_ curve: UnitCurve, size: CGSize, steps: Int) -> CGPath {
+	public static func build(_ curve: UnitCurve, size: CGSize, steps: Int, isFlipped: Bool = false) -> CGPath {
 		assert(steps > 2)
 
 		let stepSize: Double = size.width / Double(steps - 1)
 
 		let result = CGMutablePath()
 
-		result.move(to: CGPoint(x: 0, y: 0))
+		result.move(to: CGPoint(x: 0, y: isFlipped ? size.height - 1 : 0.0))
 
 		stride(from: stepSize, to: size.width, by: stepSize).forEach { x in
 			let xUnit = x / Double(size.width)
-			let yUnit = curve.value(at: xUnit)
+			let yy = curve.value(at: xUnit)
+			let yUnit = isFlipped ? (1.0 - yy) : yy
 			let yVal = yUnit * Double(size.height)
 			result.addLine(to: CGPoint(x: x, y: yVal))
 		}
 
-		result.addLine(to: CGPoint(x: size.width - 1, y: size.height - 1))
+		result.addLine(to: CGPoint(x: size.width - 1, y: isFlipped ? 0 : size.height - 1))
 
 		return result
 	}

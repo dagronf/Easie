@@ -28,6 +28,12 @@ public struct EaseInElastic: UnitCurve {
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
+
+	/// Create
+	public init() { }
+	/// Retrieve the unit value for the function for the given time
+	/// - Parameter t: The time value, 0.0 ... 1.0
+	/// - Returns: The unit value of the function at the given time
 	@inlinable public func value(at t: Double) -> Double { easeInElastic(at: t) }
 }
 
@@ -46,6 +52,9 @@ public func easeInElastic(at t: Double) -> Double {
 struct EaseOutElastic: UnitCurve {
 	/// The title for the easing function
 	public var title: String { "easeOutElastic" }
+
+	/// Create
+	public init() { }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
@@ -66,6 +75,9 @@ public func easeOutElastic(at t: Double) -> Double {
 struct EaseInEaseOutElastic: UnitCurve {
 	/// The title for the easing function
 	public var title: String { "easeInEaseOutElastic" }
+
+	/// Create
+	public init() { }
 	/// Retrieve the unit value for the function for the given time
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
