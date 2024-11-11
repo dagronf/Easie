@@ -19,14 +19,14 @@
 
 #if canImport(CoreGraphics)
 
-import Foundation
 import CoreGraphics
+import Foundation
 
 public enum CGGradientErrors: Error {
 	case cannotCreateGradient
 }
 
-extension CGGradient {
+public extension CGGradient {
 	/// Build a gradient between two colors using a curve
 	/// - Parameters:
 	///   - color1: First color
@@ -34,20 +34,25 @@ extension CGGradient {
 	///   - curve: The unit curve to apply
 	///   - steps: The number of steps to use when creating the gradient
 	/// - Returns: A new gradient object
-	public static func build(from color1: CGColor, to color2: CGColor, curve: UnitCurve, steps: Int = 10) throws -> CGGradient {
+	static func build(
+		from color1: CGColor,
+		to color2: CGColor,
+		curve: UnitCurve,
+		steps: Int = 10
+	) throws -> CGGradient {
 		let steps = stride(from: 0.0, to: 1.0, by: 1.0 / Double(steps))
 		let colors = try steps.map { x in
-			let y = curve.value(at: x)
-			return try color1.mix(with: color2, by: y)
+			try color1.mix(with: color2, by: curve.value(at: x))
 		}
-		guard let g = CGGradient(
+		guard let gradient = CGGradient(
 			colorsSpace: nil,
 			colors: colors as CFArray,
 			locations: steps.map { CGFloat($0) }
-		) else {
+		)
+		else {
 			throw CGGradientErrors.cannotCreateGradient
 		}
-		return g
+		return gradient
 	}
 }
 

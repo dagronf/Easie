@@ -288,6 +288,11 @@ final class EasingFunctionsKitTests: XCTestCase {
 			try! outputFolder.write(markdownText, to: "gradient-generation.md", encoding: .utf8)
 		}
 
+		let fontDetails: [NSAttributedString.Key: Any] = [
+			.foregroundColor: NSColor(white: 0, alpha: 1.0),
+			.font: NSFont(name: "Courier New", size: 11)!
+		]
+
 		var allCurves = AllEasingCurves
 		allCurves.append(contentsOf: [
 			Linear(values: [0.0, 0.5, 1.0]),
@@ -333,6 +338,14 @@ final class EasingFunctionsKitTests: XCTestCase {
 					ctx.setLineWidth(2)
 					ctx.strokePath()
 				}
+
+				ctx.savingGState { ctx in
+					let attributedString = NSAttributedString(string: curve.title, attributes: fontDetails)
+					let line = CTLineCreateWithAttributedString(attributedString)
+					ctx.translateBy(x: 5, y: 5)
+					CTLineDraw(line, ctx)
+				}
+
 			}
 
 			let image = try XCTUnwrap(bm.image)
