@@ -1,5 +1,5 @@
 import XCTest
-@testable import EasingFunctionsKit
+@testable import Easie
 
 final class CommonTests: XCTestCase {
 	func testStartEndEasingCheck() throws {

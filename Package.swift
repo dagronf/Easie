@@ -6,26 +6,20 @@ import PackageDescription
 let deps: [PackageDescription.Package.Dependency] = [
 	.package(url: "https://github.com/dagronf/Bitmap", from: "1.4.0")
 ]
-let testDeps: [PackageDescription.Target.Dependency] = ["EasingFunctionsKit", "Bitmap"]
+let testDeps: [PackageDescription.Target.Dependency] = ["Easie", "Bitmap"]
 #else
 let deps: [PackageDescription.Package.Dependency] = []
-let testDeps: [PackageDescription.Target.Dependency] = ["EasingFunctionsKit"]
+let testDeps: [PackageDescription.Target.Dependency] = ["Easie"]
 #endif
 
 let package = Package(
-	name: "EasingFunctionsKit",
+	name: "Easie",
 	products: [
-		.library(
-			name: "EasingFunctionsKit",
-			targets: ["EasingFunctionsKit"]),
+		.library(name: "Easie", targets: ["Easie"]),
 	],
 	dependencies: deps,
 	targets: [
-		.target(
-			name: "EasingFunctionsKit"),
-		.testTarget(
-			name: "EasingFunctionsKitTests",
-			dependencies: testDeps
-		),
+		.target(name: "Easie"),
+		.testTarget(name: "EasieTests", dependencies: testDeps),
 	]
 )

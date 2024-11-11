@@ -2,7 +2,7 @@
 
 import XCTest
 
-@testable import EasingFunctionsKit
+@testable import Easie
 import Bitmap
 
 internal let testResultsContainer = try! TestFilesContainer(named: "EasingFunctionTests")

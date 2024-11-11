@@ -1,4 +1,4 @@
-@testable import EasingFunctionsKit
+@testable import Easie
 
 let AllEasingCurves: [UnitCurve] = [
 	EaseIn(type: .sine),
