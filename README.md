@@ -45,7 +45,7 @@ let unitY = easeInEaseOutElastic(at: 0.68)
 
 Linear curves define the `Y` values equally spaced along the t axis.
 
-A Linear curve must always start 
+A linear curve must always start at 0.0 and end at 1.0.
 
 <img src="Art/images/path-linear(0.0,0.1,0.5,0.9,1.0).png" />
 <img src="Art/images/path-linear(0.0,0.5,1.0).png" />
