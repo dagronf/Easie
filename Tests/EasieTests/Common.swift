@@ -1,5 +1,13 @@
 @testable import Easie
 
+#if os(macOS)
+import AppKit.NSFont
+typealias Font = NSFont
+#elseif os(iOS) || os(tvOS) || os(visionOS) || os(watchOS)
+import UIKit.UIFont
+typealias Font = UIFont
+#endif
+
 let AllEasingCurves: [UnitCurve] = [
 	EaseIn(type: .sine),
 	EaseIn(type: .cubic),

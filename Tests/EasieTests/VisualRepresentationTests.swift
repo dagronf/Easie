@@ -70,15 +70,15 @@ final class EasingFunctionsKitTests: XCTestCase {
 			Jump(.jumpBoth, steps: 3),
 		]
 
-		let font = NSFont(name: "Courier New", size: 24)!
+		let font = Font(name: "Menlo", size: 24)!
 
 		for type in types {
 
 			// width of the drawing is 300
 
-			let bm = try Bitmap(size: CGSize(width: 600, height: 600), backgroundColor: .black)
+			let bm = try Bitmap(size: CGSize(width: 600, height: 600), backgroundColor: CGColor(gray: 0, alpha: 1))
 
-			bm.drawRect(CGRect(x: 149.5, y: 149.5, width: 301, height: 301), stroke: .init(color: .white, lineWidth: 1))
+			bm.drawRect(CGRect(x: 149.5, y: 149.5, width: 301, height: 301), stroke: .init(color: CGColor(gray: 1, alpha: 1), lineWidth: 1))
 
 			stride(from: 0, to: 300, by: 2).forEach { i in
 				let frac = Double(i) / 300.0
@@ -96,7 +96,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 
 				let str = NSAttributedString(string: type.title, attributes: [
 					NSAttributedString.Key.font : font,
-					NSAttributedString.Key.foregroundColor : NSColor.systemGreen,
+					NSAttributedString.Key.foregroundColor : CGColor(srgbRed: 0, green: 1, blue: 0, alpha: 1)
 				])
 
 				bm.drawText(str, position: CGPoint(x: 10, y: 10))
@@ -127,7 +127,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 		for jumpType in Jump.JumpType.allCases {
 			markdownText += "## \(jumpType)\n\n"
 			try (2 ... 6).forEach { stepCount in
-				let bm = try Bitmap(size: CGSize(width: 300, height: 300), backgroundColor: .black)
+				let bm = try Bitmap(size: CGSize(width: 300, height: 300), backgroundColor: CGColor(gray: 0, alpha: 1))
 
 				let j = Jump(jumpType, steps: stepCount)
 				stride(from: 0, through: 299, by: 2).forEach { x in
@@ -174,7 +174,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 
 		for j in linears {
 
-			let bm = try Bitmap(size: CGSize(width: 300, height: 300), backgroundColor: .black)
+			let bm = try Bitmap(size: CGSize(width: 300, height: 300), backgroundColor: CGColor(gray: 0, alpha: 1))
 
 			stride(from: 0, through: 299, by: 2).forEach { x in
 				let yVal = j.value(at: Double(x) / 300.0)
@@ -208,8 +208,8 @@ final class EasingFunctionsKitTests: XCTestCase {
 		}
 
 		let fontDetails: [NSAttributedString.Key: Any] = [
-			.foregroundColor: NSColor(white: 0.5, alpha: 1.0),
-			.font: NSFont(name: "Courier New", size: 11)!
+			.foregroundColor: CGColor(gray: 0.5, alpha: 1),
+			.font: Font(name: "Menlo", size: 11)!
 		]
 
 		var allCurves = AllEasingCurves
@@ -289,8 +289,8 @@ final class EasingFunctionsKitTests: XCTestCase {
 		}
 
 		let fontDetails: [NSAttributedString.Key: Any] = [
-			.foregroundColor: NSColor(white: 0, alpha: 1.0),
-			.font: NSFont(name: "Courier New", size: 11)!
+			.foregroundColor: CGColor(gray: 0, alpha: 1),
+			.font: Font(name: "Menlo", size: 11)!
 		]
 
 		var allCurves = AllEasingCurves
