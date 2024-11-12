@@ -29,7 +29,7 @@ public extension Path {
 	///   - size: The path size
 	///   - steps: The number of steps to use when approximating the curve
 	init(_ curve: Easie.UnitCurve, size: CGSize, steps: Int) {
-		let path = CGPath.build(curve, size: size, steps: steps, isFlipped: true)
+		let path = curve.path(size: size, steps: steps, isFlipped: true)
 		self.init(path)
 	}
 }
@@ -51,7 +51,7 @@ public struct EasingCurve: Shape {
 
 	/// Describes this shape as a path within a rectangular frame of reference.
 	public func path(in rect: CGRect) -> Path {
-		Path(CGPath.build(self.curve, size: rect.size, steps: self.steps, isFlipped: true))
+		Path(self.curve.path(size: rect.size, steps: self.steps, isFlipped: true))
 	}
 }
 
