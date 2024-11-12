@@ -20,6 +20,12 @@ let package = Package(
 	dependencies: deps,
 	targets: [
 		.target(name: "Easie"),
-		.testTarget(name: "EasieTests", dependencies: testDeps),
+		.testTarget(
+			name: "EasieTests",
+			dependencies: testDeps,
+			resources: [
+				.process("resources"),
+			]
+		),
 	]
 )

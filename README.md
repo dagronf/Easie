@@ -82,7 +82,7 @@ let unitY = linear.value(at: 0.25)
 ```
 
 ```swift
-// An ease-out curve
+// An linear curve
 let linear = Linear(values: [0.0, 0.1, 0.5, 0.9, 1.0])
 let unitY = linear.value(at: 0.68)
 ```
