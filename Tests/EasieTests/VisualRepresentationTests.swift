@@ -233,7 +233,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 		])
 
 		for curve in allCurves {
-			let p1 = curve.path(size: CGSize(width: 150, height: 100), steps: 150)
+			let p1 = curve.cgPath(size: CGSize(width: 150, height: 100), steps: 150)
 
 			let bm = try Bitmap(size: CGSize(width: 200, height: 180)) { ctx in
 
@@ -330,7 +330,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 					options: [.drawsAfterEndLocation, .drawsBeforeStartLocation]
 				)
 
-				let pth = curve.path(size: CGSize(width: 150, height: 100), steps: 50)
+				let pth = curve.cgPath(size: CGSize(width: 150, height: 100), steps: 50)
 				ctx.savingGState { ctx in
 					ctx.addPath(pth)
 					ctx.setStrokeColor(CGColor(gray: 1, alpha: 1))
@@ -463,7 +463,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 				}
 
 				ctx.savingGState { ctx in
-					let pth = curve.path(size: CGSize(width: 100, height: 100), steps: 25)
+					let pth = curve.cgPath(size: CGSize(width: 100, height: 100), steps: 25)
 					ctx.translateBy(x: 25, y: 25)
 					ctx.addPath(pth)
 					ctx.setStrokeColor(CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1))

@@ -19,17 +19,17 @@
 
 #if canImport(CoreGraphics)
 
-import Foundation
 import CoreGraphics
+import Foundation
 
-extension UnitCurve {
+public extension UnitCurve {
 	/// Return the curve position between two sizes
 	/// - Parameters:
 	///   - s0: The first size
 	///   - s1: The second size
 	///   - t: A unit time value 0.0 ... 1.0
 	/// - Returns: The interpolated point value
-	public func value(_ s0: CGSize, _ s1: CGSize, at t: Double) -> CGSize {
+	func value(_ s0: CGSize, _ s1: CGSize, at t: Double) -> CGSize {
 		let position = self.value(at: t.unitClamped())
 		return CGSize(
 			width: lerp(s0.width, s1.width, t: position),
@@ -43,7 +43,7 @@ extension UnitCurve {
 	///   - p1: The second size
 	///   - t: An array of unit time values
 	/// - Returns: An array of interpolated sizes
-	@inlinable public func values(_ s0: CGSize, _ s1: CGSize, at t: [Double]) -> [CGSize] {
+	@inlinable func values(_ s0: CGSize, _ s1: CGSize, at t: [Double]) -> [CGSize] {
 		assert(t.count > 0)
 		return t.map { self.value(s0, s1, at: $0) }
 	}
@@ -54,7 +54,7 @@ extension UnitCurve {
 	///   - p1: The second size
 	///   - count: The number of frames (must be > 1)
 	/// - Returns: The interpolated point values
-	public func values(_ s0: CGSize, _ s1: CGSize, count: Int) -> [CGSize] {
+	func values(_ s0: CGSize, _ s1: CGSize, count: Int) -> [CGSize] {
 		assert(count > 1)
 		let dx: Double = 1.0 / Double(count - 1)
 		return stride(from: 0, through: 1, by: dx)

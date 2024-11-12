@@ -19,17 +19,17 @@
 
 #if canImport(CoreGraphics)
 
-import Foundation
 import CoreGraphics
+import Foundation
 
-extension UnitCurve {
+public extension UnitCurve {
 	/// Build a CGPath representing the easing curve
 	/// - Parameters:
-	///   - curve: The curve
 	///   - size: The size of the resulting path
 	///   - steps: The number of steps to take along the curve when building the path
+	///   - isFlipped: If true, flips the y axis
 	/// - Returns: CGPath
-	public func path(size: CGSize, steps: Int, isFlipped: Bool = false) -> CGPath {
+	func cgPath(size: CGSize, steps: Int, isFlipped: Bool = false) -> CGPath {
 		assert(steps > 2)
 
 		let stepSize: Double = size.width / Double(steps - 1)
@@ -37,7 +37,7 @@ extension UnitCurve {
 		let result = CGMutablePath()
 		result.move(to: CGPoint(x: 0, y: isFlipped ? size.height - 1 : 0.0))
 
-		stride(from: stepSize, to: size.width, by: stepSize).forEach { x in
+		for x in stride(from: stepSize, to: size.width, by: stepSize) {
 			let xUnit = x / Double(size.width)
 			let yy = self.value(at: xUnit)
 			let yUnit = isFlipped ? (1.0 - yy) : yy

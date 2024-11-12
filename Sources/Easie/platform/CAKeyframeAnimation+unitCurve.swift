@@ -57,7 +57,13 @@ public extension UnitCurve {
 	) -> CAKeyframeAnimation {
 		let a = CAKeyframeAnimation(keyPath: keyPath)
 		a.values = self.values(from, through, count: keyframeCount)
-			.map { NSValue(point: $0) }
+			.map {
+				#if os(macOS)
+				NSValue(point: $0)
+				#else
+				NSValue(cgPoint: $0)
+				#endif
+			}
 		return a
 	}
 
@@ -76,7 +82,13 @@ public extension UnitCurve {
 	) -> CAKeyframeAnimation {
 		let a = CAKeyframeAnimation(keyPath: keyPath)
 		a.values = self.values(from, through, count: keyframeCount)
-			.map { NSValue(size: $0) }
+			.map {
+				#if os(macOS)
+				NSValue(size: $0)
+				#else
+				NSValue(cgSize: $0)
+				#endif
+			}
 		return a
 	}
 }

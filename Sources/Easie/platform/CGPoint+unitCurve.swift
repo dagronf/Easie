@@ -19,17 +19,17 @@
 
 #if canImport(CoreGraphics)
 
-import Foundation
 import CoreGraphics
+import Foundation
 
-extension UnitCurve {
+public extension UnitCurve {
 	/// Return the curve position between two points
 	/// - Parameters:
 	///   - p0: The first point
 	///   - p1: The second point
 	///   - t: A unit time value
 	/// - Returns: The interpolated point value
-	public func value(_ p0: CGPoint, _ p1: CGPoint, at t: Double) -> CGPoint {
+	func value(_ p0: CGPoint, _ p1: CGPoint, at t: Double) -> CGPoint {
 		let position = self.value(at: t.unitClamped())
 		return CGPoint(
 			x: lerp(p0.x, p1.x, t: position),
@@ -43,7 +43,7 @@ extension UnitCurve {
 	///   - p1: The second point
 	///   - t: An array of unit time values
 	/// - Returns: An array of interpolated points
-	public func values(_ p0: CGPoint, _ p1: CGPoint, at t: [Double]) -> [CGPoint] {
+	func values(_ p0: CGPoint, _ p1: CGPoint, at t: [Double]) -> [CGPoint] {
 		assert(t.count > 0)
 		return t.map { self.value(p0, p1, at: $0) }
 	}
@@ -54,7 +54,7 @@ extension UnitCurve {
 	///   - p1: The second point
 	///   - count: The number of points (must be > 1)
 	/// - Returns: The interpolated point values
-	public func values(_ p0: CGPoint, _ p1: CGPoint, count: Int) -> [CGPoint] {
+	func values(_ p0: CGPoint, _ p1: CGPoint, count: Int) -> [CGPoint] {
 		assert(count > 1)
 		let dx: Double = 1.0 / Double(count - 1)
 		return stride(from: 0, through: 1, by: dx)
