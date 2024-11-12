@@ -28,7 +28,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 			try! outputFolder.write(markdownText, to: "function-bitmaps.md", encoding: .utf8)
 		}
 
-		markdownText += "# easing functions tests\n\n"
+		markdownText += "# Easing functions tests\n\n"
 
 		let types: [UnitCurve] = [
 			Linear(),
@@ -68,6 +68,11 @@ final class EasingFunctionsKitTests: XCTestCase {
 			Jump(.jumpEnd, steps: 4),
 			Jump(.jumpNone, steps: 5),
 			Jump(.jumpBoth, steps: 3),
+			Linear(values: [0.0, 0.5, 1.0]),
+			Linear(values: [0.0, 0.25, 0.25, 1.0]),
+			Linear(values: [0.0, 0.125, 0.25, 1.0]),
+			Linear(values: [0.0, 1.0, 0.0, 1.0]),
+			Linear(values: [0.0, 0.1, 0.5, 0.9, 1.0]),
 		]
 
 		let font = Font.systemFont(ofSize: 24)
@@ -179,11 +184,6 @@ final class EasingFunctionsKitTests: XCTestCase {
 			stride(from: 0, through: 299, by: 2).forEach { x in
 				let yVal = j.value(at: Double(x) / 300.0)
 				bm[x, Int(yVal * 299)] = .red
-//				let y = Int(yVal * 299)
-//				bm.drawPath(
-//					CGPath(ellipseIn: CGRect(x: x - 2, y: y - 2, width: 4, height: 4), transform: nil),
-//					fillColor: CGColor(red: 1, green: 0, blue: 0, alpha: 1)
-//				)
 			}
 
 			let image = try XCTUnwrap(bm.image)
@@ -194,7 +194,6 @@ final class EasingFunctionsKitTests: XCTestCase {
 			markdownText += "<img src='\(link)' width='150' />&nbsp;"
 		}
 	}
-
 
 	func testBuildPath() throws {
 
@@ -355,6 +354,57 @@ final class EasingFunctionsKitTests: XCTestCase {
 
 			markdownText += "<img src='\(link)' />&nbsp;"
 		}
+	}
+
+	func testCGPointInterpolation() throws {
+		let curve = Linear()
+		XCTAssertEqual(
+			CGPoint(x: -100, y: 100),
+			curve.value(CGPoint(x: -100, y: 100), CGPoint(x: 100, y: -100), at: 0.0)
+		)
+		XCTAssertEqual(
+			CGPoint(x: 100, y: -100),
+			curve.value(CGPoint(x: -100, y: 100), CGPoint(x: 100, y: -100), at: 1.0)
+		)
+		XCTAssertEqual(
+			CGPoint(x: 0, y: 0),
+			curve.value(CGPoint(x: -100, y: 100), CGPoint(x: 100, y: -100), at: 0.5)
+		)
+		XCTAssertEqual(
+			CGPoint(x: -50, y: 50),
+			curve.value(CGPoint(x: -100, y: 100), CGPoint(x: 100, y: -100), at: 0.25)
+		)
+	}
+
+	func testCGPointInterpolations() throws {
+		let curve = Linear()
+		let p0 = CGPoint(x: -100, y: 100)
+		let p1 = CGPoint(x: 100, y: -100)
+
+		let pts = curve.values(p0, p1, count: 5)
+		XCTAssertEqual(5, pts.count)
+		XCTAssertEqual(pts[0], CGPoint(x: -100, y: 100))
+		XCTAssertEqual(pts[1], CGPoint(x: -50, y: 50))
+		XCTAssertEqual(pts[2], CGPoint(x: 0, y: 0))
+		XCTAssertEqual(pts[3], CGPoint(x: 50, y: -50))
+		XCTAssertEqual(pts[4], CGPoint(x: 100, y: -100))
+
+		XCTAssertEqual(
+			CGPoint(x: -100, y: 100),
+			curve.value(p0, p1, at: 0.0)
+		)
+		XCTAssertEqual(
+			CGPoint(x: 100, y: -100),
+			curve.value(p0, p1, at: 1.0)
+		)
+		XCTAssertEqual(
+			CGPoint(x: 0, y: 0),
+			curve.value(p0, p1, at: 0.5)
+		)
+		XCTAssertEqual(
+			CGPoint(x: -50, y: 50),
+			curve.value(p0, p1, at: 0.25)
+		)
 	}
 }
 

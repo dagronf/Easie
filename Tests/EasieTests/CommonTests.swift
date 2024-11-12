@@ -10,8 +10,33 @@ final class CommonTests: XCTestCase {
 		}
 	}
 
-	func testVerifyRawMappedValues() throws {
+	func testValues() throws {
+		// Make sure basic lerp works
+		let b1 = Linear()
 
+		// Unit value should map exactly
+		stride(from: 0, through: 1, by: 0.01).forEach { value in
+			XCTAssertEqual(value, b1.value(at: value))
+		}
+
+		// Verify single convert
+		XCTAssertEqual(-100, b1.value(-100, 100, at: 0))
+		XCTAssertEqual(100, b1.value(-100, 100, at: 1))
+		XCTAssertEqual(0, b1.value(-100, 100, at: 0.5))
+		XCTAssertEqual(-50, b1.value(-100, 100, at: 0.25))
+		XCTAssertEqual(50, b1.value(-100, 100, at: 0.75))
+
+		// Verify multi-convert
+		XCTAssertEqual([-100, -50, 0, 50, 100], b1.values(-100.0 ... 100.0, count: 5))
+	}
+
+	func testValues2() throws {
+		let curve = Linear()
+		let positions = curve.values(count: 5)
+		XCTAssertEqual([0.0, 0.25, 0.5, 0.75, 1.0], positions)
+	}
+
+	func testVerifyRawMappedValues() throws {
 		// Generate 100 points from 0.0 ... 1.0 and generate the position
 		// values for each curve.
 		// Compare this to a pre-existing generated

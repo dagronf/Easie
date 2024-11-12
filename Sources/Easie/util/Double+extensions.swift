@@ -39,3 +39,13 @@ internal extension Double {
 		return abs(self - value) < pow(10, -Double(precision))
 	}
 }
+
+/// Linear interpret between two values
+/// - Parameters:
+///   - v0: value 1
+///   - v1: value 2
+///   - t: unit time value
+/// - Returns: Linearlly interpolated value
+@inlinable public func lerp(_ v0: Double, _ v1: Double, t: Double) -> Double {
+	return v0 + ((v1 - v0) * t)
+}
