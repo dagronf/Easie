@@ -51,8 +51,18 @@ public struct Linear: UnitCurve {
 	/// - Parameter t: The time value, 0.0 ... 1.0
 	/// - Returns: The unit value of the function at the given time
 	public func value(at t: Double) -> Double {
-		let t = t.unitClamped()
+		// If there's less than 3 values just interpret as linear
 		if self.progressValues.count < 3 { return t }
+
+		let t = t.unitClamped()
+		if t.isEqualTo(0.0, precision: 8) {
+			// Just return the first value (which will exist because we've checked earlier, hence the force unwrap)
+			return self.progressValues.first!
+		}
+		else if t.isEqualTo(1.0, precision: 8) {
+			// Just return the last value (which will exist because we've checked earlier, hence the force unwrap)
+			return self.progressValues.last!
+		}
 
 		let divisor = 1.0 / Double(self.count - 1)
 		let which = Int(t / divisor)
@@ -65,7 +75,7 @@ public struct Linear: UnitCurve {
 		// The new t value is the current t value fractionally between x1 and x2
 		let newT = (t - x1) / (x2 - x1)
 
-		let /*xVal*/ _ = x1 + ((x2 - x1) * newT)
+		// let xVal = x1 + ((x2 - x1) * newT)
 		let yVal = y1 + ((y2 - y1) * newT)
 
 		return yVal

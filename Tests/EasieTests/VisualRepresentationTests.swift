@@ -406,6 +406,112 @@ final class EasingFunctionsKitTests: XCTestCase {
 			curve.value(p0, p1, at: 0.25)
 		)
 	}
+
+	func testLerp() throws {
+
+		let outputFolder = try! testResultsContainer.subfolder(with: "lerp-tests")
+		let imagesFolder = try! outputFolder.subfolder(with: "images")
+		let imageStore = ImageOutput(imagesFolder)
+		var markdownText = ""
+
+		defer {
+			try! outputFolder.write(markdownText, to: "lerp-tests.md", encoding: .utf8)
+		}
+
+		markdownText += "|  name  |  curve  |  lerp  |\n"
+		markdownText += "|--------|---------|--------|\n"
+
+		var allCurves = AllEasingCurves
+		allCurves.append(contentsOf: [
+			Linear(values: [0.0, 0.5, 1.0]),
+			Linear(values: [0.0, 0.25, 0.25, 1.0]),
+			Linear(values: [0.0, 0.125, 0.25, 1.0]),
+			Linear(values: [0.0, 1.0, 0.0, 1.0]),
+			Linear(values: [0.0, 0.1, 0.5, 0.9, 1.0]),
+		])
+
+		allCurves.append(contentsOf: [
+			Jump(.jumpStart, steps: 2),
+			Jump(.jumpEnd, steps: 4),
+			Jump(.jumpNone, steps: 5),
+			Jump(.jumpBoth, steps: 3),
+		])
+
+		allCurves.append(contentsOf: [
+			CubicBezier(x1: 0.1, y1: 0.6, x2: 0.7, y2: 0.2),
+			CubicBezier(x1: 0.3, y1: 0.2, x2: 0.2, y2: 1.4),
+		])
+
+		for curve in allCurves {
+
+			markdownText += "| \(curve.title) "
+
+			let rect = CGRect(x: 0, y: 0, width: 150, height: 150)
+			let sz = rect.size
+
+			let bm2 = try Bitmap(size: sz) { ctx in
+				ctx.savingGState { ctx in
+					ctx.setFillColor(CGColor(gray: 0.9, alpha: 1))
+					ctx.fill([rect])
+					ctx.setStrokeColor(CGColor(gray: 0.4, alpha: 1))
+					ctx.setLineWidth(0.5)
+					ctx.stroke(rect.insetBy(dx: 0.5, dy: 0.5))
+
+					ctx.setStrokeColor(CGColor(gray: 0.4, alpha: 1))
+					ctx.setLineWidth(0.5)
+					ctx.stroke(CGRect(x: 24.5, y: 24.5, width: 101, height: 101))
+				}
+
+				ctx.savingGState { ctx in
+					let pth = CGPath.build(curve, size: CGSize(width: 100, height: 100), steps: 25)
+					ctx.translateBy(x: 25, y: 25)
+					ctx.addPath(pth)
+					ctx.setStrokeColor(CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1))
+					ctx.strokePath()
+				}
+			}
+
+			let image2 = try XCTUnwrap(bm2.image)
+			let data2 = try image2.representation.png()
+			let filename2 = "lerp-\(curve.title)-curve.png"
+			let link2 = try imageStore.store(data2, filename: filename2)
+
+			markdownText += "| <img src='\(link2)' width='150' /> "
+
+			let v = curve.values(CGPoint(x: 0, y: 20), CGPoint(x: 100, y: 79), count: 25)
+
+			let bm = try Bitmap(size: sz) { ctx in
+				ctx.savingGState { ctx in
+					ctx.setFillColor(CGColor(gray: 0.9, alpha: 1))
+					ctx.fill([rect])
+					ctx.setStrokeColor(CGColor(gray: 0.4, alpha: 1))
+					ctx.setLineWidth(0.5)
+					ctx.stroke(rect.insetBy(dx: 0.5, dy: 0.5))
+
+					ctx.setStrokeColor(CGColor(gray: 0.4, alpha: 1))
+					ctx.setLineWidth(0.5)
+					ctx.stroke(CGRect(x: 24.5, y: 24.5, width: 101, height: 101))
+				}
+
+				ctx.savingGState { ctx in
+					v.forEach {
+						let pos = CGRect(x: 25 +  $0.x - 2, y: 25 + $0.y - 2, width: 4, height: 4)
+						let t = $0.x / (100 - $0.x)
+						ctx.setFillColor(CGColor(srgbRed: t, green: 0, blue: 1 - t, alpha: 1))
+						ctx.addPath(CGPath(ellipseIn: pos, transform: nil))
+						ctx.fillPath()
+					}
+				}
+			}
+
+			let image = try XCTUnwrap(bm.image)
+			let data = try image.representation.png()
+			let filename = "lerp-\(curve.title).png"
+			let link = try imageStore.store(data, filename: filename)
+
+			markdownText += "| <img src='\(link)' width='150' /> |\n"
+		}
+	}
 }
 
 #endif
