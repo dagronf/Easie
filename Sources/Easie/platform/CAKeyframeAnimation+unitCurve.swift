@@ -22,66 +22,60 @@
 import Foundation
 import QuartzCore
 
-public extension CAKeyframeAnimation {
-	/// Create a keyframe animation between two values
+public extension UnitCurve {
+	/// Create a keyframe animation between two values using this curve
 	/// - Parameters:
 	///   - keyPath: The key path
-	///   - curve: The curve
 	///   - from: The from value
 	///   - through: The to value
 	///   - keyframeCount: The number of key frames to include
 	/// - Returns: A keyframe animation
-	static func animation(
+	func keyframeAnimation(
 		_ keyPath: String?,
-		curve: UnitCurve,
 		from: Double,
 		through: Double,
 		keyframeCount: Int = 60
 	) -> CAKeyframeAnimation {
 		let a = CAKeyframeAnimation(keyPath: keyPath)
-		a.values = curve.values(from, through, count: keyframeCount)
+		a.values = self.values(from, through, count: keyframeCount)
 			.map { NSNumber(value: $0) }
 		return a
 	}
 
-	/// Create a keyframe animation between two points
+	/// Create a keyframe animation between two points using this curve
 	/// - Parameters:
 	///   - keyPath: The key path
-	///   - curve: The curve
 	///   - from: The from point
 	///   - through: The to point
 	///   - keyframeCount: The number of key frames to add
 	/// - Returns: A keyframe animation
-	static func animation(
+	func keyframeAnimation(
 		_ keyPath: String?,
-		curve: UnitCurve,
 		from: CGPoint,
 		through: CGPoint,
 		keyframeCount: Int = 60
 	) -> CAKeyframeAnimation {
 		let a = CAKeyframeAnimation(keyPath: keyPath)
-		a.values = curve.values(from, through, count: keyframeCount)
+		a.values = self.values(from, through, count: keyframeCount)
 			.map { NSValue(point: $0) }
 		return a
 	}
 
-	/// Create a keyframe animation between two sizes
+	/// Create a keyframe animation between two sizes using this curve
 	/// - Parameters:
 	///   - keyPath: The key path
-	///   - curve: The curve
 	///   - from: The from size
 	///   - through: The to size
 	///   - keyframeCount: The number of key frames to add
 	/// - Returns: A keyframe animation
-	static func animation(
+	func keyframeAnimation(
 		_ keyPath: String?,
-		curve: UnitCurve,
 		from: CGSize,
 		through: CGSize,
 		keyframeCount: Int = 60
 	) -> CAKeyframeAnimation {
 		let a = CAKeyframeAnimation(keyPath: keyPath)
-		a.values = curve.values(from, through, count: keyframeCount)
+		a.values = self.values(from, through, count: keyframeCount)
 			.map { NSValue(size: $0) }
 		return a
 	}
