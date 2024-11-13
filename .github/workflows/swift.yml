@@ -7,7 +7,7 @@ jobs:
     name: Unit tests on macOS
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build
         run: swift build -v -c release
       - name: Run tests
@@ -17,7 +17,7 @@ jobs:
     name: Unit tests on iOS
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run tests on iOS
         run: xcodebuild -scheme Easie test -destination "platform=iOS Simulator,name=iPhone SE (3rd generation),OS=latest"
 
@@ -33,7 +33,7 @@ jobs:
     name: Unit tests on tvOS
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run tests on tvOS
         run: xcodebuild -scheme Easie test -destination "platform=tvOS Simulator,name=Apple TV 4K (3rd generation),OS=latest"
 
@@ -43,7 +43,7 @@ jobs:
     container:
       image: swift:latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build
         run: swift build -v -c release
       - name: Run tests
