@@ -26,8 +26,8 @@ public extension UnitCurve {
 	/// Return the curve position between two points
 	/// - Parameters:
 	///   - t: A unit time value
-	///   - from: The first point
-	///   - through: The second point
+	///   - p0: The first point
+	///   - p1: The second point
 	/// - Returns: The interpolated point value
 	func value(at t: Double, from p0: CGPoint, through p1: CGPoint) -> CGPoint {
 		let position = self.value(at: t.unitClamped())
@@ -40,8 +40,8 @@ public extension UnitCurve {
 	/// Return curve positions between two points
 	/// - Parameters:
 	///   - t: An array of unit time values
-	///   - from: The first point
-	///   - through: The second point
+	///   - p0: The first point
+	///   - p1: The second point
 	/// - Returns: An array of interpolated points
 	func values(at t: [Double], from p0: CGPoint, through p1: CGPoint) -> [CGPoint] {
 		t.map { self.value(at: $0, from: p0, through: p1) }
@@ -50,8 +50,8 @@ public extension UnitCurve {
 	/// Return equidistant curve positions between two points
 	/// - Parameters:
 	///   - count: The number of points (must be > 1)
-	///   - from: The first point
-	///   - through: The second point
+	///   - p0: The first point
+	///   - p1: The second point
 	/// - Returns: The interpolated point values
 	func values(count: Int, from p0: CGPoint, through p1: CGPoint) -> [CGPoint] {
 		equallySpacedUnitValues(count).map {

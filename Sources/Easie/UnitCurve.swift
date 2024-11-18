@@ -49,14 +49,14 @@ public extension UnitCurve {
 	}
 }
 
-// MARK: - Mapping within two values
+// MARK: - Mapping between two values
 
 public extension UnitCurve {
 	/// Retrieve a position value for the function for the given time
 	/// - Parameters:
 	///   - t: The t value
-	///   - from: Lower value
-	///   - through: Upper value
+	///   - v0: first value
+	///   - v1: second value
 	/// - Returns: The mapped position value
 	@inlinable func value(at t: Double, from v0: Double, through v1: Double) -> Double {
 		lerp(v0, v1, t: self.value(at: t.unitClamped()))
@@ -65,18 +65,19 @@ public extension UnitCurve {
 	/// Retrieve position values for the function for the given times
 	/// - Parameters:
 	///   - t: An array of t values to map
-	///   - from: The lower bound
-	///   - through: The upper bound
+	///   - v0: first value
+	///   - v1: second value
 	/// - Returns: The mapped position values
 	@inlinable func values(at t: [Double], from v0: Double, through v1: Double) -> [Double] {
 		self.values(at: t).map { lerp(v0, v1, t: $0) }
 	}
 
-	/// Retrieve curve values within a range
+	/// Retrieve equally spaced curve values between two values
 	/// - Parameters:
 	///   - count: The number of steps (must be > 1)
-	///   - range: The output value range
-	/// - Returns: The interpolated value between the two values
+	///   - v0: first value
+	///   - v1: second value
+	/// - Returns: The interpolated values between the two values
 	@inlinable func values(count: Int, from v0: Double, through v1: Double) -> [Double] {
 		self.values(count: count).map { lerp(v0, v1, t: $0) }
 	}
@@ -85,16 +86,16 @@ public extension UnitCurve {
 // MARK: - Mapping to a closed range
 
 public extension UnitCurve {
-	/// Retrive the curve value between a closed range
+	/// Returns the curve value between a closed range for a given time
 	/// - Parameters:
 	///   - t: The time value, 0.0 ... 1.0
-	///   - in: The value range
+	///   - outputRange: The value range
 	/// - Returns: The interpolated value between the two points
 	@inlinable func value(at t: Double, in outputRange: ClosedRange<Double>) -> Double {
 		self.value(at: t, from: outputRange.lowerBound, through: outputRange.upperBound)
 	}
 
-	/// Retrive the curve value within a range
+	/// Returns curve values between a closed range for given times
 	/// - Parameters:
 	///   - t: An array of time values, 0.0 ... 1.0
 	///   - outputRange: The output value range
@@ -103,7 +104,7 @@ public extension UnitCurve {
 		self.values(at: t, from: outputRange.lowerBound, through: outputRange.upperBound)
 	}
 
-	/// Retrieve curve values within a range
+	/// Returns curve values between a closed range for given times
 	/// - Parameters:
 	///   - count: The number of steps (must be > 1)
 	///   - range: The output value range

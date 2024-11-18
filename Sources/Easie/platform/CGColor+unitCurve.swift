@@ -26,8 +26,8 @@ extension UnitCurve {
 	/// Return an interpolated color between two points
 	/// - Parameters:
 	///   - t: A unit time value
-	///   - from: The first color
-	///   - through: The second color
+	///   - c0: The first color
+	///   - c1: The second color
 	/// - Returns: The interpolated color value
 	public func value(at t: Double, from c0: CGColor, through c1: CGColor) throws -> CGColor {
 		try c0.mix(with: c1, by: t.unitClamped())
@@ -36,8 +36,8 @@ extension UnitCurve {
 	/// Return an array of interpolated colors between two points
 	/// - Parameters:
 	///   - t: A unit time values
-	///   - from: The first color
-	///   - through: The second color
+	///   - c0: The first color
+	///   - c1: The second color
 	/// - Returns: The interpolated color values
 	public func values(at t: [Double], from c0: CGColor, through c1: CGColor) throws -> [CGColor] {
 		try t.map { try c0.mix(with: c1, by: $0) }

@@ -22,12 +22,14 @@ import Foundation
 // MARK: - Ease In
 
 /// Ease in. Goes slightly backwards before moving forward
+/// - Parameters:
 ///   - t: A unit time value
 /// - Returns: The unit eased position
 public func easeInBack(at t: Double) -> Double {
-	let t = t.unitClamped()
 	let c1: Double = 1.70158
 	let c3: Double = c1 + 1
+
+	let t = t.unitClamped()
 	return c3 * t * t * t - c1 * t * t
 }
 
@@ -46,7 +48,8 @@ public struct EaseInBack: UnitCurve {
 // MARK: - Ease Out
 
 /// Ease out. Overshoots then pulls back to 1.0
-/// - Parameter t: A unit time value
+/// - Parameters:
+///   - t: A unit time value
 /// - Returns: The unit eased position
 public func easeOutBack(at t: Double) -> Double {
 	let c1: Double = 1.70158

@@ -25,7 +25,7 @@ import Foundation
 public extension UnitCurve {
 	/// Return the position value for the curve at t
 	/// - Parameters:
-	///   - xValue: The x value (0 ... size.width)
+	///   - x: The x value (0 ... size.width)
 	///   - size: The size
 	/// - Returns: A position value (0 ... size.height)
 	@inlinable func value(x: Double, in size: CGSize) -> Double {
@@ -36,7 +36,7 @@ public extension UnitCurve {
 
 	/// Return the positions value for the curve at t
 	/// - Parameters:
-	///   - t: The x values (0 ... size.width)
+	///   - x: The x values (0 ... size.width)
 	///   - size: The curve size
 	/// - Returns:Position values (0 ... size.height)
 	@inlinable func values(x: [Double], in size: CGSize) -> [Double] {
@@ -48,8 +48,8 @@ public extension UnitCurve {
 	/// Return the curve position between two sizes
 	/// - Parameters:
 	///   - t: A unit time value 0.0 ... 1.0
-	///   - from: The first size
-	///   - through: The second size
+	///   - s0: The first size
+	///   - s1: The second size
 	/// - Returns: The interpolated point value
 	func value(at t: Double, from s0: CGSize, through s1: CGSize) -> CGSize {
 		let position = self.value(at: t.unitClamped())
@@ -62,8 +62,8 @@ public extension UnitCurve {
 	/// Return curve positions between two sizes
 	/// - Parameters:
 	///   - t: An array of unit time values
-	///   - from: The first size
-	///   - through: The second size
+	///   - s0: The first size
+	///   - s1: The second size
 	/// - Returns: An array of interpolated sizes
 	@inlinable func values(at t: [Double], from s0: CGSize, through s1: CGSize) -> [CGSize] {
 		t.map { self.value(at: $0, from: s0, through: s1) }
@@ -72,8 +72,8 @@ public extension UnitCurve {
 	/// Return equidistant curve positions between two sizes
 	/// - Parameters:
 	///   - count: The number of frames (must be > 1)
-	///   - from: The first size
-	///   - through: The second size
+	///   - s0: The first size
+	///   - s1: The second size
 	/// - Returns: The interpolated point values
 	func values(count: Int, from s0: CGSize, through s1: CGSize) -> [CGSize] {
 		self.values(at: equallySpacedUnitValues(count), from: s0, through: s1)

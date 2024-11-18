@@ -23,7 +23,6 @@ import Foundation
 
 /// Ease in with elasticity
 /// - Parameters:
-///   - type: The easing type
 ///   - t: A unit time value
 /// - Returns: The unit eased position
 public func easeInElastic(at t: Double) -> Double {
@@ -50,7 +49,6 @@ public struct EaseInElastic: UnitCurve {
 
 /// Ease out with elasticity
 /// - Parameters:
-///   - type: The easing type
 ///   - t: A unit time value
 /// - Returns: The unit eased position
 public func easeOutElastic(at t: Double) -> Double {
@@ -77,7 +75,6 @@ struct EaseOutElastic: UnitCurve {
 
 /// Ease in ease out with elasticity
 /// - Parameters:
-///   - type: The easing type
 ///   - t: A unit time value
 /// - Returns: The unit eased position
 public func easeInEaseOutElastic(at t: Double) -> Double {
