@@ -15,6 +15,30 @@ extension CGContext {
 	}
 }
 
+func allTestCurves() -> [UnitCurve] {
+	var allCurves = AllEasingCurves
+	allCurves.append(contentsOf: [
+		Linear(values: [0.0, 0.5, 1.0]),
+		Linear(values: [0.0, 0.25, 0.25, 1.0]),
+		Linear(values: [0.0, 0.125, 0.25, 1.0]),
+		Linear(values: [0.0, 1.0, 0.0, 1.0]),
+		Linear(values: [0.0, 0.1, 0.5, 0.9, 1.0]),
+	])
+
+	allCurves.append(contentsOf: [
+		Jump(.jumpStart, steps: 2),
+		Jump(.jumpEnd, steps: 4),
+		Jump(.jumpNone, steps: 5),
+		Jump(.jumpBoth, steps: 3),
+	])
+
+	allCurves.append(contentsOf: [
+		CubicBezier(x1: 0.1, y1: 0.6, x2: 0.7, y2: 0.2),
+		CubicBezier(x1: 0.3, y1: 0.2, x2: 0.2, y2: 1.4),
+	])
+	return allCurves
+}
+
 final class EasingFunctionsKitTests: XCTestCase {
 
 	func testExample() throws {
@@ -30,54 +54,9 @@ final class EasingFunctionsKitTests: XCTestCase {
 
 		markdownText += "# Easing functions tests\n\n"
 
-		let types: [UnitCurve] = [
-			Linear(),
-			EaseIn(type: .sine),
-			EaseIn(type: .cubic),
-			EaseIn(type: .quint),
-			EaseIn(type: .circ),
-			EaseIn(type: .quad),
-			EaseIn(type: .quart),
-			EaseIn(type: .expo),
-			EaseOut(type: .sine),
-			EaseOut(type: .cubic),
-			EaseOut(type: .quint),
-			EaseOut(type: .circ),
-			EaseOut(type: .quad),
-			EaseOut(type: .quart),
-			EaseOut(type: .expo),
-			EaseInEaseOut(type: .sine),
-			EaseInEaseOut(type: .cubic),
-			EaseInEaseOut(type: .quint),
-			EaseInEaseOut(type: .circ),
-			EaseInEaseOut(type: .quad),
-			EaseInEaseOut(type: .quart),
-			EaseInEaseOut(type: .expo),
-			EaseInBack(),
-			EaseOutBack(),
-			EaseInEaseOutBack(),
-			EaseInBounce(),
-			EaseOutBounce(),
-			EaseInEaseOutBounce(),
-			EaseInElastic(),
-			EaseOutElastic(),
-			EaseInEaseOutElastic(),
-			CubicBezier(x1: 0.1, y1: 0.6, x2: 0.7, y2: 0.2),
-			CubicBezier(x1: 0.3, y1: 0.2, x2: 0.2, y2: 1.4),
-			Jump(.jumpStart, steps: 2),
-			Jump(.jumpEnd, steps: 4),
-			Jump(.jumpNone, steps: 5),
-			Jump(.jumpBoth, steps: 3),
-			Linear(values: [0.0, 0.5, 1.0]),
-			Linear(values: [0.0, 0.25, 0.25, 1.0]),
-			Linear(values: [0.0, 0.125, 0.25, 1.0]),
-			Linear(values: [0.0, 1.0, 0.0, 1.0]),
-			Linear(values: [0.0, 0.1, 0.5, 0.9, 1.0]),
-		]
-
 		let font = Font.systemFont(ofSize: 24)
 
-		for type in types {
+		for type in allTestCurves() {
 
 			// width of the drawing is 300
 
@@ -211,28 +190,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 			.font: Font.systemFont(ofSize: 11)
 		]
 
-		var allCurves = AllEasingCurves
-		allCurves.append(contentsOf: [
-			Linear(values: [0.0, 0.5, 1.0]),
-			Linear(values: [0.0, 0.25, 0.25, 1.0]),
-			Linear(values: [0.0, 0.125, 0.25, 1.0]),
-			Linear(values: [0.0, 1.0, 0.0, 1.0]),
-			Linear(values: [0.0, 0.1, 0.5, 0.9, 1.0]),
-		])
-
-		allCurves.append(contentsOf: [
-			Jump(.jumpStart, steps: 2),
-			Jump(.jumpEnd, steps: 4),
-			Jump(.jumpNone, steps: 5),
-			Jump(.jumpBoth, steps: 3),
-		])
-
-		allCurves.append(contentsOf: [
-			CubicBezier(x1: 0.1, y1: 0.6, x2: 0.7, y2: 0.2),
-			CubicBezier(x1: 0.3, y1: 0.2, x2: 0.2, y2: 1.4),
-		])
-
-		for curve in allCurves {
+		for curve in allTestCurves() {
 			let p1 = curve.cgPath(size: CGSize(width: 150, height: 100), steps: 150)
 
 			let bm = try Bitmap(size: CGSize(width: 200, height: 180)) { ctx in
@@ -292,28 +250,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 			.font: Font.systemFont(ofSize: 11)
 		]
 
-		var allCurves = AllEasingCurves
-		allCurves.append(contentsOf: [
-			Linear(values: [0.0, 0.5, 1.0]),
-			Linear(values: [0.0, 0.25, 0.25, 1.0]),
-			Linear(values: [0.0, 0.125, 0.25, 1.0]),
-			Linear(values: [0.0, 1.0, 0.0, 1.0]),
-			Linear(values: [0.0, 0.1, 0.5, 0.9, 1.0]),
-		])
-
-		allCurves.append(contentsOf: [
-			Jump(.jumpStart, steps: 2),
-			Jump(.jumpEnd, steps: 4),
-			Jump(.jumpNone, steps: 5),
-			Jump(.jumpBoth, steps: 3),
-		])
-
-		allCurves.append(contentsOf: [
-			CubicBezier(x1: 0.1, y1: 0.6, x2: 0.7, y2: 0.2),
-			CubicBezier(x1: 0.3, y1: 0.2, x2: 0.2, y2: 1.4),
-		])
-
-		for curve in allCurves {
+		for curve in allTestCurves() {
 
 			let gradient = try CGGradient.build(
 				from: CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1),
@@ -421,28 +358,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 		markdownText += "|  name  |  curve  |  lerp  |\n"
 		markdownText += "|--------|---------|--------|\n"
 
-		var allCurves = AllEasingCurves
-		allCurves.append(contentsOf: [
-			Linear(values: [0.0, 0.5, 1.0]),
-			Linear(values: [0.0, 0.25, 0.25, 1.0]),
-			Linear(values: [0.0, 0.125, 0.25, 1.0]),
-			Linear(values: [0.0, 1.0, 0.0, 1.0]),
-			Linear(values: [0.0, 0.1, 0.5, 0.9, 1.0]),
-		])
-
-		allCurves.append(contentsOf: [
-			Jump(.jumpStart, steps: 2),
-			Jump(.jumpEnd, steps: 4),
-			Jump(.jumpNone, steps: 5),
-			Jump(.jumpBoth, steps: 3),
-		])
-
-		allCurves.append(contentsOf: [
-			CubicBezier(x1: 0.1, y1: 0.6, x2: 0.7, y2: 0.2),
-			CubicBezier(x1: 0.3, y1: 0.2, x2: 0.2, y2: 1.4),
-		])
-
-		for curve in allCurves {
+		for curve in allTestCurves() {
 
 			markdownText += "| \(curve.title) "
 
@@ -523,28 +439,6 @@ final class EasingFunctionsKitTests: XCTestCase {
 			try! outputFolder.write(markdownText, to: "rect-interpolation.md", encoding: .utf8)
 		}
 
-
-		var allCurves = AllEasingCurves
-		allCurves.append(contentsOf: [
-			Linear(values: [0.0, 0.5, 1.0]),
-			Linear(values: [0.0, 0.25, 0.25, 1.0]),
-			Linear(values: [0.0, 0.125, 0.25, 1.0]),
-			Linear(values: [0.0, 1.0, 0.0, 1.0]),
-			Linear(values: [0.0, 0.1, 0.5, 0.9, 1.0]),
-		])
-
-		allCurves.append(contentsOf: [
-			Jump(.jumpStart, steps: 2),
-			Jump(.jumpEnd, steps: 4),
-			Jump(.jumpNone, steps: 5),
-			Jump(.jumpBoth, steps: 3),
-		])
-
-		allCurves.append(contentsOf: [
-			CubicBezier(x1: 0.1, y1: 0.6, x2: 0.7, y2: 0.2),
-			CubicBezier(x1: 0.3, y1: 0.2, x2: 0.2, y2: 1.4),
-		])
-
 		markdownText += "|  name  | curve |  rectinterp  |\n"
 		markdownText += "|--------|-------|--------------|\n"
 
@@ -558,7 +452,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 		let rect = CGRect(x: 0, y: 0, width: 200, height: 200)
 		let sz = rect.size
 
-		for curve in allCurves {
+		for curve in allTestCurves() {
 
 			markdownText += "| \(curve.title) "
 

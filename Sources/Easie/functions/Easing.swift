@@ -19,6 +19,102 @@
 
 import Foundation
 
+/// Available built-in easing curve types
+public enum EasingFunctionType: String, Sendable, Identifiable, CaseIterable {
+	public var id: RawValue { rawValue }
+	case linear
+	case sine
+	case cubic
+	case quint
+	case circ
+	case quad
+	case quart
+	case expo
+	case bounce
+	case elastic
+	case back
+}
+
+// MARK: - Ease In
+
+/// Ease in
+/// - Parameters:
+///   - type: The easing type
+///   - t: A unit time value
+/// - Returns: The unit eased position
+public func easeIn(_ type: EasingFunctionType = .cubic, at t: Double) -> Double {
+	let t = t.unitClamped()
+	switch type {
+	case .linear: return t
+	case .sine: return 1.0 - cos(t * Double.pi / 2.0)
+	case .cubic: return t * t * t
+	case .quint: return t * t * t * t * t
+	case .circ: return 1 - sqrt(1.0 - pow(t, 2.0))
+	case .quad: return t * t
+	case .quart: return t * t * t * t
+	case .expo: return (t == 0) ? 0.0 : pow(2.0, 10.0 * t - 10.0)
+	case .bounce: return easeInBounce(at: t)
+	case .elastic: return easeInElastic(at: t)
+	case .back: return easeInBack(at: t)
+	}
+}
+
+/// Ease in
+public struct EaseIn: UnitCurve {
+	/// The easing type
+	public let type: EasingFunctionType
+	/// Create an easing function
+	public init(type: EasingFunctionType = .cubic) {
+		self.type = type
+	}
+	/// The title for the easing function
+	public var title: String { "easeIn(\(self.type))" }
+	/// Retrieve the unit value for the function for the given time
+	/// - Parameter t: The time value, 0.0 ... 1.0
+	/// - Returns: The unit value of the function at the given time
+	@inlinable public func value(at t: Double) -> Double { easeIn(self.type, at: t) }
+}
+
+// MARK: - Ease Out
+
+/// Ease out
+/// - Parameters:
+///   - type: The easing type
+///   - t: A unit time value
+/// - Returns: The unit eased position
+public func easeOut(_ type: EasingFunctionType = .cubic, at t: Double) -> Double {
+	let t = t.unitClamped()
+	switch type {
+	case .linear: return t
+	case .sine: return sin(t * Double.pi / 2)
+	case .cubic: return 1.0 - pow(1 - t, 3)
+	case .quint: return 1.0 - pow(1 - t, 5)
+	case .circ: return sqrt(1.0 - pow(t - 1, 2))
+	case .quad: return 1.0 - (1.0 - t) * (1.0 - t)
+	case .quart: return 1.0 - pow(1.0 - t, 4.0)
+	case .expo: return (t == 1) ? 1.0 : 1.0 - pow(2.0, -10.0 * t)
+	case .bounce: return EaseOutBounce().value(at: t)
+	case .elastic: return EaseOutElastic().value(at: t)
+	case .back: return EaseOutBack().value(at: t)
+	}
+}
+
+/// Ease out
+public struct EaseOut: UnitCurve {
+	/// The easing type
+	public let type: EasingFunctionType
+	/// Create an easing function
+	public init(type: EasingFunctionType = .cubic) {
+		self.type = type
+	}
+	/// The title for the easing function
+	public var title: String { "easeOut(\(self.type))" }
+	/// Retrieve the unit value for the function for the given time
+	/// - Parameter t: The time value, 0.0 ... 1.0
+	/// - Returns: The unit value of the function at the given time
+	@inlinable public func value(at t: Double) -> Double { easeOut(self.type, at: t) }
+}
+
 // MARK: - Ease In Ease Out
 
 /// Ease in, ease out
