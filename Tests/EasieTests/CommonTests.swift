@@ -19,12 +19,13 @@ final class CommonTests: XCTestCase {
 			XCTAssertEqual(value, b1.value(at: value))
 		}
 
+		let range = -100.0 ... 100.0
 		// Verify single convert
-		XCTAssertEqual(-100, b1.value(-100, 100, at: 0))
-		XCTAssertEqual(100, b1.value(-100, 100, at: 1))
-		XCTAssertEqual(0, b1.value(-100, 100, at: 0.5))
-		XCTAssertEqual(-50, b1.value(-100, 100, at: 0.25))
-		XCTAssertEqual(50, b1.value(-100, 100, at: 0.75))
+		XCTAssertEqual(-100, b1.value(at: 0, outputRange: range))
+		XCTAssertEqual(100, b1.value(at: 1, outputRange: range))
+		XCTAssertEqual(0, b1.value(at: 0.5, outputRange: range))
+		XCTAssertEqual(-50, b1.value(at: 0.25, outputRange: range))
+		XCTAssertEqual(50, b1.value(at: 0.75, outputRange: range))
 
 		// Verify multi-convert
 		XCTAssertEqual([-100, -50, 0, 50, 100], b1.values(-100.0 ... 100.0, count: 5))
@@ -91,5 +92,27 @@ final class CommonTests: XCTestCase {
 				XCTAssertEqual(gen[index], orig[index], accuracy: 0.00000001)
 			}
 		}
+	}
+
+	func testRangeCurve() throws {
+		let curve = Linear(values: [0, 0.5, 1])
+		let outputRange = 0.0 ... 600.0
+
+		XCTAssertEqual(0, curve.value(at: 0, outputRange: outputRange), accuracy: 0.0001)
+		XCTAssertEqual(150, curve.value(at: 0.25, outputRange: outputRange), accuracy: 0.0001)
+		XCTAssertEqual(300, curve.value(at: 0.5, outputRange: outputRange), accuracy: 0.0001)
+		XCTAssertEqual(450, curve.value(at: 0.75, outputRange: outputRange), accuracy: 0.0001)
+		XCTAssertEqual(600, curve.value(at: 1.0, outputRange: outputRange), accuracy: 0.0001)
+	}
+
+	func testSizedCurve() throws {
+		let curve = Linear(values: [0, 0.5, 1])
+		let sz = CGSize(width: 300, height: 600)
+
+		XCTAssertEqual(0, curve.value(at: 0, in: sz))
+		XCTAssertEqual(150, curve.value(at: 75, in: sz))
+		XCTAssertEqual(300, curve.value(at: 150, in: sz))
+		XCTAssertEqual(450, curve.value(at: 225, in: sz))
+		XCTAssertEqual(600, curve.value(at: 300, in: sz))
 	}
 }
