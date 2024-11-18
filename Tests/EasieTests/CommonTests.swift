@@ -110,11 +110,11 @@ final class CommonTests: XCTestCase {
 		let curve = Linear(values: [0, 0.5, 1])
 		let sz = CGSize(width: 300, height: 600)
 
-		XCTAssertEqual(0, curve.value(at: 0, in: sz))
-		XCTAssertEqual(150, curve.value(at: 75, in: sz))
-		XCTAssertEqual(300, curve.value(at: 150, in: sz))
-		XCTAssertEqual(450, curve.value(at: 225, in: sz))
-		XCTAssertEqual(600, curve.value(at: 300, in: sz))
+		XCTAssertEqual(0, curve.value(x: 0, in: sz))
+		XCTAssertEqual(150, curve.value(x: 75, in: sz))
+		XCTAssertEqual(300, curve.value(x: 150, in: sz))
+		XCTAssertEqual(450, curve.value(x: 225, in: sz))
+		XCTAssertEqual(600, curve.value(x: 300, in: sz))
 	}
 
 	func testRectInterpolate() throws {

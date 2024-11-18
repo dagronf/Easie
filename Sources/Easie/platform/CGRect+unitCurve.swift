@@ -23,15 +23,35 @@ import CoreGraphics
 import Foundation
 
 public extension UnitCurve {
-	/// Return the position value for the input value
+	/// Return the y value for the provided time value
 	/// - Parameters:
-	///   - x: The x value, between rect.minX and rect.maxX
+	///   - t: The unit value
+	///   - rect: The rectangle
+	/// - Returns: The position for the curve, mapped between rect.minY and rect.maxY
+	func value(at t: Double, in rect: CGRect) -> Double {
+		lerp(rect.minY, rect.maxY, t: self.value(at: t.unitClamped()))
+	}
+
+	/// Return the y values for the provided time values
+	/// - Parameters:
+	///   - t: The unit values
+	///   - rect: The rectangle
+	/// - Returns: The position for the curve, mapped between rect.minY and rect.maxY
+	func value(at t: [Double], in rect: CGRect) -> [Double] {
+		t.map { self.value(at: $0, in: rect) }
+	}
+}
+
+public extension UnitCurve {
+	/// Return the y value for the provided x value within the rect bounds
+	/// - Parameters:
+	///   - x: The x value between rect.minX and rect.maxX
 	///   - rect: The input rectangle
 	/// - Returns: The position for the curve, mapped between rect.minY and rect.maxY
-	func value(at x: Double, in rect: CGRect) -> Double {
+	func value(x: Double, in rect: CGRect) -> Double {
 		let x = max(rect.minX, min(rect.maxX, x))
-		let dt = x / rect.width
-		return lerp(rect.minY, rect.maxY, t: self.value(at: dt))
+		let t = x / rect.width
+		return self.value(at: t, in: rect)
 	}
 
 	/// Return the position values for the input values
@@ -39,8 +59,8 @@ public extension UnitCurve {
 	///   - x: The x values, between rect.minX and rect.maxX
 	///   - rect: The input rectangle
 	/// - Returns: The position for the curve, mapped between rect.minY and rect.maxY
-	@inlinable func values(at x: [Double], in rect: CGRect) -> [Double] {
-		x.map { self.value(at: $0, in: rect) }
+	@inlinable func values(x: [Double], in rect: CGRect) -> [Double] {
+		x.map { self.value(x: $0, in: rect) }
 	}
 }
 
@@ -52,8 +72,7 @@ public extension UnitCurve {
 	///   - r1: The final rect
 	/// - Returns: An interpolated rect
 	func value(at t: Double, from r0: CGRect, through r1: CGRect) -> CGRect {
-		let t = t.unitClamped()
-		return CGRect(
+		CGRect(
 			x: self.value(at: t, from: r0.minX, through: r1.minX),
 			y: self.value(at: t, from: r0.minY, through: r1.minY),
 			width: self.value(at: t, from: r0.width, through: r1.width),

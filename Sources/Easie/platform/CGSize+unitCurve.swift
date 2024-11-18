@@ -25,10 +25,10 @@ import Foundation
 public extension UnitCurve {
 	/// Return the position value for the curve at t
 	/// - Parameters:
-	///   - x: The x value (0 ... size.width)
-	///   - size: The curve size
+	///   - xValue: The x value (0 ... size.width)
+	///   - size: The size
 	/// - Returns: A position value (0 ... size.height)
-	@inlinable func value(at x: Double, in size: CGSize) -> Double {
+	@inlinable func value(x: Double, in size: CGSize) -> Double {
 		let x = max(0, min(size.width, x))
 		let t = x / size.width
 		return lerp(0, size.height, t: self.value(at: t))
@@ -39,8 +39,8 @@ public extension UnitCurve {
 	///   - t: The x values (0 ... size.width)
 	///   - size: The curve size
 	/// - Returns:Position values (0 ... size.height)
-	@inlinable func values(at x: [Double], in size: CGSize) -> [Double] {
-		x.map { self.value(at: $0, in: size) }
+	@inlinable func values(x: [Double], in size: CGSize) -> [Double] {
+		x.map { self.value(x: $0, in: size) }
 	}
 }
 
@@ -66,8 +66,7 @@ public extension UnitCurve {
 	///   - through: The second size
 	/// - Returns: An array of interpolated sizes
 	@inlinable func values(at t: [Double], from s0: CGSize, through s1: CGSize) -> [CGSize] {
-		assert(t.count > 0)
-		return t.map { self.value(at: $0, from: s0, through: s1) }
+		t.map { self.value(at: $0, from: s0, through: s1) }
 	}
 
 	/// Return equidistant curve positions between two sizes
@@ -77,10 +76,7 @@ public extension UnitCurve {
 	///   - through: The second size
 	/// - Returns: The interpolated point values
 	func values(count: Int, from s0: CGSize, through s1: CGSize) -> [CGSize] {
-		assert(count > 1)
-		let dx: Double = 1.0 / Double(count - 1)
-		return stride(from: 0, through: 1, by: dx)
-			.map { self.value(at: $0, from: s0, through: s1) }
+		self.values(at: equallySpacedUnitValues(count), from: s0, through: s1)
 	}
 }
 

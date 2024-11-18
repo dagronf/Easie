@@ -30,7 +30,7 @@ extension UnitCurve {
 	///   - through: The second color
 	/// - Returns: The interpolated color value
 	public func value(at t: Double, from c0: CGColor, through c1: CGColor) throws -> CGColor {
-		try c0.mix(with: c1, by: t)
+		try c0.mix(with: c1, by: t.unitClamped())
 	}
 
 	/// Return an array of interpolated colors between two points
@@ -40,8 +40,7 @@ extension UnitCurve {
 	///   - through: The second color
 	/// - Returns: The interpolated color values
 	public func values(at t: [Double], from c0: CGColor, through c1: CGColor) throws -> [CGColor] {
-		assert(t.count > 1)
-		return try t.map { try c0.mix(with: c1, by: $0) }
+		try t.map { try c0.mix(with: c1, by: $0) }
 	}
 
 	/// Return equally spaced colors between two colors
@@ -51,7 +50,7 @@ extension UnitCurve {
 	///   - c1: The last color
 	/// - Returns: An array of colors
 	public func values(count: Int, from c0: CGColor, through c1: CGColor) throws -> [CGColor] {
-		return try self.values(at: unitMappedCountValues(count), from: c0, through: c1)
+		try self.values(at: equallySpacedUnitValues(count), from: c0, through: c1)
 	}
 }
 

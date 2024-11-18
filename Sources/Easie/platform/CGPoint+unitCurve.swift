@@ -44,8 +44,7 @@ public extension UnitCurve {
 	///   - through: The second point
 	/// - Returns: An array of interpolated points
 	func values(at t: [Double], from p0: CGPoint, through p1: CGPoint) -> [CGPoint] {
-		assert(t.count > 0)
-		return t.map { self.value(at: $0, from: p0, through: p1) }
+		t.map { self.value(at: $0, from: p0, through: p1) }
 	}
 
 	/// Return equidistant curve positions between two points
@@ -55,10 +54,9 @@ public extension UnitCurve {
 	///   - through: The second point
 	/// - Returns: The interpolated point values
 	func values(count: Int, from p0: CGPoint, through p1: CGPoint) -> [CGPoint] {
-		assert(count > 1)
-		let dx: Double = 1.0 / Double(count - 1)
-		return stride(from: 0, through: 1, by: dx)
-			.map { self.value(at: $0, from: p0, through: p1) }
+		equallySpacedUnitValues(count).map {
+			self.value(at: $0, from: p0, through: p1)
+		}
 	}
 }
 

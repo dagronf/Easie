@@ -44,8 +44,7 @@ public extension UnitCurve {
 	/// - Returns: An array of evenly spaced unit curve values
 	func values(count: Int) -> [Double] {
 		assert(count > 1)
-		let dx = 1.0 / Double(count - 1)
-		return stride(from: 0.0, through: 1.0, by: dx)
+		return equallySpacedUnitValues(count)
 			.map { self.value(at: $0) }
 	}
 }

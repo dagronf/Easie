@@ -41,7 +41,7 @@ public extension CGGradient {
 		curve: UnitCurve,
 		steps: Int = 10
 	) throws -> CGGradient {
-		let steps = stride(from: 0.0, to: 1.0, by: 1.0 / Double(steps))
+		let steps = equallySpacedUnitValues(steps)
 		let colors = try steps.map { x in
 			try color1.mix(with: color2, by: curve.value(at: x))
 		}

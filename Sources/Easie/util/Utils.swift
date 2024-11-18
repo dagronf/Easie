@@ -25,14 +25,15 @@ import Foundation
 ///   - v1: value 2
 ///   - t: unit time value
 /// - Returns: Linearlly interpolated value
-@inlinable public func lerp(_ v0: Double, _ v1: Double, t: Double) -> Double {
+@inlinable func lerp(_ v0: Double, _ v1: Double, t: Double) -> Double {
 	return v0 + ((v1 - v0) * t)
 }
 
 /// Return equally spaced values within the unit range (0.0 ... 1.0)
 /// - Parameter count: The number of values
 /// - Returns: An array of equally spaced unit values
-public func unitMappedCountValues(_ count: Int) -> [Double] {
+func equallySpacedUnitValues(_ count: Int) -> [Double] {
+	if count < 2 { return [1.0] }
 	let dx = 1.0 / Double(count - 1)
 	return stride(from: 0.0, through: 1.0, by: dx).map { $0 }
 }

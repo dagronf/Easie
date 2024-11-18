@@ -30,22 +30,22 @@ public extension UnitCurve {
 	///   - isFlipped: If true, flips the y axis
 	/// - Returns: CGPath
 	func cgPath(size: CGSize, steps: Int, isFlipped: Bool = false) -> CGPath {
-		assert(steps > 2)
-
-		let stepSize: Double = size.width / Double(steps - 1)
+		precondition(steps > 2)
 
 		let result = CGMutablePath()
+		guard size != .zero else { return result }
+
+		// Move to the first point (which should be (0.0, 0.0)
 		result.move(to: CGPoint(x: 0, y: isFlipped ? size.height - 1 : 0.0))
 
-		for x in stride(from: stepSize, to: size.width, by: stepSize) {
-			let xUnit = x / Double(size.width)
-			let yy = self.value(at: xUnit)
+		let steps = equallySpacedUnitValues(steps).dropFirst()
+		for x in steps {
+			let yy = self.value(at: x)
 			let yUnit = isFlipped ? (1.0 - yy) : yy
 			let yVal = yUnit * Double(size.height)
-			result.addLine(to: CGPoint(x: x, y: yVal))
+			let xx = x * Double(size.width)
+			result.addLine(to: CGPoint(x: xx, y: yVal))
 		}
-
-		result.addLine(to: CGPoint(x: size.width - 1, y: isFlipped ? 0 : size.height - 1))
 
 		return result
 	}

@@ -593,7 +593,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 				markdownText += "| <img src='\(link2)' width='150' /> "
 			}
 
-			let v = unitMappedCountValues(steps)
+			let v = equallySpacedUnitValues(steps)
 
 			let bm = try Bitmap(size: sz) { ctx in
 				(0 ..< steps).forEach { index in
