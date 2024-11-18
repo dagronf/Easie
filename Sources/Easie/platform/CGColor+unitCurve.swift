@@ -17,25 +17,42 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+#if canImport(CoreGraphics)
+
+import CoreGraphics
 import Foundation
 
-internal extension Double {
-	/// Clamp this value to 0.0 ... 1.0
-	@inlinable @inline(__always) func unitClamped() -> Double { max(0.0, min(1.0, self)) }
-
-	/// Does this value fall within the range
-	/// - Parameter range: The range to check
-	/// - Returns: True if this value falls within the range, false otherwise
-	@inlinable @inline(__always) func isInRange(_ range: ClosedRange<Double>) -> Bool {
-		range.contains(self)
+extension UnitCurve {
+	/// Return an interpolated color between two points
+	/// - Parameters:
+	///   - t: A unit time value
+	///   - from: The first color
+	///   - through: The second color
+	/// - Returns: The interpolated color value
+	public func value(at t: Double, from c0: CGColor, through c1: CGColor) throws -> CGColor {
+		try c0.mix(with: c1, by: t)
 	}
 
-	/// An equality check with a precision accuracy
+	/// Return an array of interpolated colors between two points
 	/// - Parameters:
-	///   - value: The value to compare
-	///   - precision: The precision (accuracy) in decimal places (eg. 8 == 8 decimal places)
-	/// - Returns: True if mostly equal, false otherwise
-	func isEqualTo(_ value: Double, precision: UInt) -> Bool {
-		return abs(self - value) < pow(10, -Double(precision))
+	///   - t: A unit time values
+	///   - from: The first color
+	///   - through: The second color
+	/// - Returns: The interpolated color values
+	public func values(at t: [Double], from c0: CGColor, through c1: CGColor) throws -> [CGColor] {
+		assert(t.count > 1)
+		return try t.map { try c0.mix(with: c1, by: $0) }
+	}
+
+	/// Return equally spaced colors between two colors
+	/// - Parameters:
+	///   - count: The number of equally spaced colors
+	///   - c0: The first color
+	///   - c1: The last color
+	/// - Returns: An array of colors
+	public func values(count: Int, from c0: CGColor, through c1: CGColor) throws -> [CGColor] {
+		return try self.values(at: unitMappedCountValues(count), from: c0, through: c1)
 	}
 }
+
+#endif

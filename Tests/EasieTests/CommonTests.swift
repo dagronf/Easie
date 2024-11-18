@@ -21,14 +21,14 @@ final class CommonTests: XCTestCase {
 
 		let range = -100.0 ... 100.0
 		// Verify single convert
-		XCTAssertEqual(-100, b1.value(at: 0, outputRange: range))
-		XCTAssertEqual(100, b1.value(at: 1, outputRange: range))
-		XCTAssertEqual(0, b1.value(at: 0.5, outputRange: range))
-		XCTAssertEqual(-50, b1.value(at: 0.25, outputRange: range))
-		XCTAssertEqual(50, b1.value(at: 0.75, outputRange: range))
+		XCTAssertEqual(-100, b1.value(at: 0, in: range))
+		XCTAssertEqual(100, b1.value(at: 1, in: range))
+		XCTAssertEqual(0, b1.value(at: 0.5, in: range))
+		XCTAssertEqual(-50, b1.value(at: 0.25, in: range))
+		XCTAssertEqual(50, b1.value(at: 0.75, in: range))
 
 		// Verify multi-convert
-		XCTAssertEqual([-100, -50, 0, 50, 100], b1.values(-100.0 ... 100.0, count: 5))
+		XCTAssertEqual([-100, -50, 0, 50, 100], b1.values(count: 5, in: -100.0 ... 100.0))
 	}
 
 	func testValues2() throws {
@@ -98,13 +98,14 @@ final class CommonTests: XCTestCase {
 		let curve = Linear(values: [0, 0.5, 1])
 		let outputRange = 0.0 ... 600.0
 
-		XCTAssertEqual(0, curve.value(at: 0, outputRange: outputRange), accuracy: 0.0001)
-		XCTAssertEqual(150, curve.value(at: 0.25, outputRange: outputRange), accuracy: 0.0001)
-		XCTAssertEqual(300, curve.value(at: 0.5, outputRange: outputRange), accuracy: 0.0001)
-		XCTAssertEqual(450, curve.value(at: 0.75, outputRange: outputRange), accuracy: 0.0001)
-		XCTAssertEqual(600, curve.value(at: 1.0, outputRange: outputRange), accuracy: 0.0001)
+		XCTAssertEqual(0, curve.value(at: 0, in: outputRange), accuracy: 0.0001)
+		XCTAssertEqual(150, curve.value(at: 0.25, in: outputRange), accuracy: 0.0001)
+		XCTAssertEqual(300, curve.value(at: 0.5, in: outputRange), accuracy: 0.0001)
+		XCTAssertEqual(450, curve.value(at: 0.75, in: outputRange), accuracy: 0.0001)
+		XCTAssertEqual(600, curve.value(at: 1.0, in: outputRange), accuracy: 0.0001)
 	}
 
+#if canImport(CoreGraphics)
 	func testSizedCurve() throws {
 		let curve = Linear(values: [0, 0.5, 1])
 		let sz = CGSize(width: 300, height: 600)
@@ -115,4 +116,24 @@ final class CommonTests: XCTestCase {
 		XCTAssertEqual(450, curve.value(at: 225, in: sz))
 		XCTAssertEqual(600, curve.value(at: 300, in: sz))
 	}
+
+	func testRectInterpolate() throws {
+		let curve = Linear(values: [0, 0.5, 1])
+		let r0 = CGRect(x: 0, y: 0, width: 100, height: 100)
+		let r1 = CGRect(x: 10, y: 10, width: 80, height: 80)
+
+		
+		XCTAssertEqual(r0, curve.value(at: 0, from: r0, through: r1))
+		XCTAssertEqual(r1, curve.value(at: 1, from: r0, through: r1))
+		XCTAssertEqual(
+			CGRect(x: 5, y: 5, width: 90, height: 90),
+			curve.value(at: 0.5, from: r0, through: r1)
+		)
+		XCTAssertEqual(
+			CGRect(x: 2.5, y: 2.5, width: 95, height: 95),
+			curve.value(at: 0.25, from: r0, through: r1)
+		)
+
+	}
+#endif
 }

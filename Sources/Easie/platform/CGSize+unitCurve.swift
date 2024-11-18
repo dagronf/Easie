@@ -23,13 +23,35 @@ import CoreGraphics
 import Foundation
 
 public extension UnitCurve {
+	/// Return the position value for the curve at t
+	/// - Parameters:
+	///   - x: The x value (0 ... size.width)
+	///   - size: The curve size
+	/// - Returns: A position value (0 ... size.height)
+	@inlinable func value(at x: Double, in size: CGSize) -> Double {
+		let x = max(0, min(size.width, x))
+		let t = x / size.width
+		return lerp(0, size.height, t: self.value(at: t))
+	}
+
+	/// Return the positions value for the curve at t
+	/// - Parameters:
+	///   - t: The x values (0 ... size.width)
+	///   - size: The curve size
+	/// - Returns:Position values (0 ... size.height)
+	@inlinable func values(at x: [Double], in size: CGSize) -> [Double] {
+		x.map { self.value(at: $0, in: size) }
+	}
+}
+
+public extension UnitCurve {
 	/// Return the curve position between two sizes
 	/// - Parameters:
-	///   - s0: The first size
-	///   - s1: The second size
 	///   - t: A unit time value 0.0 ... 1.0
+	///   - from: The first size
+	///   - through: The second size
 	/// - Returns: The interpolated point value
-	func value(_ s0: CGSize, _ s1: CGSize, at t: Double) -> CGSize {
+	func value(at t: Double, from s0: CGSize, through s1: CGSize) -> CGSize {
 		let position = self.value(at: t.unitClamped())
 		return CGSize(
 			width: lerp(s0.width, s1.width, t: position),
@@ -39,26 +61,26 @@ public extension UnitCurve {
 
 	/// Return curve positions between two sizes
 	/// - Parameters:
-	///   - p0: The first size
-	///   - p1: The second size
 	///   - t: An array of unit time values
+	///   - from: The first size
+	///   - through: The second size
 	/// - Returns: An array of interpolated sizes
-	@inlinable func values(_ s0: CGSize, _ s1: CGSize, at t: [Double]) -> [CGSize] {
+	@inlinable func values(at t: [Double], from s0: CGSize, through s1: CGSize) -> [CGSize] {
 		assert(t.count > 0)
-		return t.map { self.value(s0, s1, at: $0) }
+		return t.map { self.value(at: $0, from: s0, through: s1) }
 	}
 
 	/// Return equidistant curve positions between two sizes
 	/// - Parameters:
-	///   - p0: The first size
-	///   - p1: The second size
 	///   - count: The number of frames (must be > 1)
+	///   - from: The first size
+	///   - through: The second size
 	/// - Returns: The interpolated point values
-	func values(_ s0: CGSize, _ s1: CGSize, count: Int) -> [CGSize] {
+	func values(count: Int, from s0: CGSize, through s1: CGSize) -> [CGSize] {
 		assert(count > 1)
 		let dx: Double = 1.0 / Double(count - 1)
 		return stride(from: 0, through: 1, by: dx)
-			.map { self.value(s0, s1, at: $0) }
+			.map { self.value(at: $0, from: s0, through: s1) }
 	}
 }
 

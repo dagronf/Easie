@@ -25,11 +25,11 @@ import Foundation
 public extension UnitCurve {
 	/// Return the curve position between two points
 	/// - Parameters:
-	///   - p0: The first point
-	///   - p1: The second point
 	///   - t: A unit time value
+	///   - from: The first point
+	///   - through: The second point
 	/// - Returns: The interpolated point value
-	func value(_ p0: CGPoint, _ p1: CGPoint, at t: Double) -> CGPoint {
+	func value(at t: Double, from p0: CGPoint, through p1: CGPoint) -> CGPoint {
 		let position = self.value(at: t.unitClamped())
 		return CGPoint(
 			x: lerp(p0.x, p1.x, t: position),
@@ -39,26 +39,26 @@ public extension UnitCurve {
 
 	/// Return curve positions between two points
 	/// - Parameters:
-	///   - p0: The first point
-	///   - p1: The second point
 	///   - t: An array of unit time values
+	///   - from: The first point
+	///   - through: The second point
 	/// - Returns: An array of interpolated points
-	func values(_ p0: CGPoint, _ p1: CGPoint, at t: [Double]) -> [CGPoint] {
+	func values(at t: [Double], from p0: CGPoint, through p1: CGPoint) -> [CGPoint] {
 		assert(t.count > 0)
-		return t.map { self.value(p0, p1, at: $0) }
+		return t.map { self.value(at: $0, from: p0, through: p1) }
 	}
 
 	/// Return equidistant curve positions between two points
 	/// - Parameters:
-	///   - p0: The first point
-	///   - p1: The second point
 	///   - count: The number of points (must be > 1)
+	///   - from: The first point
+	///   - through: The second point
 	/// - Returns: The interpolated point values
-	func values(_ p0: CGPoint, _ p1: CGPoint, count: Int) -> [CGPoint] {
+	func values(count: Int, from p0: CGPoint, through p1: CGPoint) -> [CGPoint] {
 		assert(count > 1)
 		let dx: Double = 1.0 / Double(count - 1)
 		return stride(from: 0, through: 1, by: dx)
-			.map { self.value(p0, p1, at: $0) }
+			.map { self.value(at: $0, from: p0, through: p1) }
 	}
 }
 

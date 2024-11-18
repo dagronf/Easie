@@ -50,88 +50,66 @@ public extension UnitCurve {
 	}
 }
 
-// MARK: - Mapping to a closed range
+// MARK: - Mapping within two values
 
 public extension UnitCurve {
-	/// Retrive the curve value between two values
+	/// Retrieve a position value for the function for the given time
 	/// - Parameters:
-	///   - t: The time value, 0.0 ... 1.0
-	///   - range: The value range
-	/// - Returns: The interpolated value between the two points
-	@inlinable @inline(__always)
-	func value(at t: Double, outputRange: ClosedRange<Double>) -> Double {
-		lerp(outputRange.lowerBound, outputRange.upperBound, t: self.value(at: t.unitClamped()))
+	///   - t: The t value
+	///   - from: Lower value
+	///   - through: Upper value
+	/// - Returns: The mapped position value
+	@inlinable func value(at t: Double, from v0: Double, through v1: Double) -> Double {
+		lerp(v0, v1, t: self.value(at: t.unitClamped()))
 	}
 
-	/// Retrive the curve value within a range
+	/// Retrieve position values for the function for the given times
 	/// - Parameters:
-	///   - t: An array of time value, 0.0 ... 1.0
-	///   - outputRange: The output value range
-	/// - Returns: The interpolated value between the two values
-	@inlinable @inline(__always)
-	func values(at t: [Double], outputRange: ClosedRange<Double>) -> [Double] {
-		assert(t.count > 0)
-		return t.map { self.value(at: $0, outputRange: outputRange) }
+	///   - t: An array of t values to map
+	///   - from: The lower bound
+	///   - through: The upper bound
+	/// - Returns: The mapped position values
+	@inlinable func values(at t: [Double], from v0: Double, through v1: Double) -> [Double] {
+		self.values(at: t).map { lerp(v0, v1, t: $0) }
 	}
 
 	/// Retrieve curve values within a range
 	/// - Parameters:
-	///   - range: The value range
 	///   - count: The number of steps (must be > 1)
+	///   - range: The output value range
 	/// - Returns: The interpolated value between the two values
-	@inlinable @inline(__always)
-	func values(_ range: ClosedRange<Double>, count: Int) -> [Double] {
-		assert(count > 1)
-		return self.values(count: count)
-			.map { lerp(range.lowerBound, range.upperBound, t: $0) }
+	@inlinable func values(count: Int, from v0: Double, through v1: Double) -> [Double] {
+		self.values(count: count).map { lerp(v0, v1, t: $0) }
 	}
 }
 
-// MARK: - Mapping to a size
+// MARK: - Mapping to a closed range
 
 public extension UnitCurve {
-	/// Return the position value for the curve at t
+	/// Retrive the curve value between a closed range
 	/// - Parameters:
-	///   - x: The t value (0 ... size.width)
-	///   - size: The curve size
-	/// - Returns: A position value (0 ... size.height)
-	@inlinable @inline(__always)
-	func value(at x: Double, in size: CGSize) -> Double {
-		let x = max(0, min(size.width, x))
-		let t = x / size.width
-		return lerp(0, size.height, t: self.value(at: t))
+	///   - t: The time value, 0.0 ... 1.0
+	///   - in: The value range
+	/// - Returns: The interpolated value between the two points
+	@inlinable func value(at t: Double, in outputRange: ClosedRange<Double>) -> Double {
+		self.value(at: t, from: outputRange.lowerBound, through: outputRange.upperBound)
 	}
 
-	/// Return the positions value for the curve at t
+	/// Retrive the curve value within a range
 	/// - Parameters:
-	///   - t: The t values (0 ... size.width)
-	///   - size: The curve size
-	/// - Returns:Position values (0 ... size.height)
-	@inlinable func values(at t: [Double], in size: CGSize) -> [Double] {
-		t.map { self.value(at: $0, in: size) }
-	}
-}
-
-// MARK: - Mapping to a rect
-
-public extension UnitCurve {
-	/// Return the position value for the input value
-	/// - Parameters:
-	///   - x: The x value, between rect.minX and rect.maxX
-	///   - rect: The input rectangle
-	/// - Returns: The position for the curve, mapped between rect.minY and rect.maxY
-	func value(at x: Double, in rect: CGRect) -> Double {
-		let x = max(rect.minX, min(rect.maxX, x))
-		let dt = x / rect.width
-		return lerp(rect.minY, rect.maxY, t: self.value(at: dt))
+	///   - t: An array of time values, 0.0 ... 1.0
+	///   - outputRange: The output value range
+	/// - Returns: The interpolated value between the two values
+	@inlinable func values(at t: [Double], in outputRange: ClosedRange<Double>) -> [Double] {
+		self.values(at: t, from: outputRange.lowerBound, through: outputRange.upperBound)
 	}
 
-	/// Return the position values for the input values
+	/// Retrieve curve values within a range
 	/// - Parameters:
-	///   - x: The x values, between rect.minX and rect.maxX
-	///   - rect: The input rectangle
-	/// - Returns: The position for the curve, mapped between rect.minY and rect.maxY
-	@inlinable func values(at x: [Double], in rect: CGRect) -> [Double] {
-		x.map { self.value(at: $0, in: rect) }
+	///   - count: The number of steps (must be > 1)
+	///   - range: The output value range
+	/// - Returns: The interpolated value between the two values
+	@inlinable func values(count: Int, in range: ClosedRange<Double>) -> [Double] {
+		self.values(count: count, from: range.lowerBound, through: range.upperBound)
 	}
 }

@@ -19,23 +19,20 @@
 
 import Foundation
 
-internal extension Double {
-	/// Clamp this value to 0.0 ... 1.0
-	@inlinable @inline(__always) func unitClamped() -> Double { max(0.0, min(1.0, self)) }
+/// Linear interpret between two values
+/// - Parameters:
+///   - v0: value 1
+///   - v1: value 2
+///   - t: unit time value
+/// - Returns: Linearlly interpolated value
+@inlinable public func lerp(_ v0: Double, _ v1: Double, t: Double) -> Double {
+	return v0 + ((v1 - v0) * t)
+}
 
-	/// Does this value fall within the range
-	/// - Parameter range: The range to check
-	/// - Returns: True if this value falls within the range, false otherwise
-	@inlinable @inline(__always) func isInRange(_ range: ClosedRange<Double>) -> Bool {
-		range.contains(self)
-	}
-
-	/// An equality check with a precision accuracy
-	/// - Parameters:
-	///   - value: The value to compare
-	///   - precision: The precision (accuracy) in decimal places (eg. 8 == 8 decimal places)
-	/// - Returns: True if mostly equal, false otherwise
-	func isEqualTo(_ value: Double, precision: UInt) -> Bool {
-		return abs(self - value) < pow(10, -Double(precision))
-	}
+/// Return equally spaced values within the unit range (0.0 ... 1.0)
+/// - Parameter count: The number of values
+/// - Returns: An array of equally spaced unit values
+public func unitMappedCountValues(_ count: Int) -> [Double] {
+	let dx = 1.0 / Double(count - 1)
+	return stride(from: 0.0, through: 1.0, by: dx).map { $0 }
 }

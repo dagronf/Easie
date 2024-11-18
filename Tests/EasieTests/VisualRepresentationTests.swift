@@ -360,19 +360,19 @@ final class EasingFunctionsKitTests: XCTestCase {
 		let curve = Linear()
 		XCTAssertEqual(
 			CGPoint(x: -100, y: 100),
-			curve.value(CGPoint(x: -100, y: 100), CGPoint(x: 100, y: -100), at: 0.0)
+			curve.value(at: 0.0, from: CGPoint(x: -100, y: 100), through: CGPoint(x: 100, y: -100))
 		)
 		XCTAssertEqual(
 			CGPoint(x: 100, y: -100),
-			curve.value(CGPoint(x: -100, y: 100), CGPoint(x: 100, y: -100), at: 1.0)
+			curve.value(at: 1.0, from: CGPoint(x: -100, y: 100), through: CGPoint(x: 100, y: -100))
 		)
 		XCTAssertEqual(
 			CGPoint(x: 0, y: 0),
-			curve.value(CGPoint(x: -100, y: 100), CGPoint(x: 100, y: -100), at: 0.5)
+			curve.value(at: 0.5, from: CGPoint(x: -100, y: 100), through: CGPoint(x: 100, y: -100))
 		)
 		XCTAssertEqual(
 			CGPoint(x: -50, y: 50),
-			curve.value(CGPoint(x: -100, y: 100), CGPoint(x: 100, y: -100), at: 0.25)
+			curve.value(at: 0.25, from: CGPoint(x: -100, y: 100), through: CGPoint(x: 100, y: -100))
 		)
 	}
 
@@ -381,7 +381,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 		let p0 = CGPoint(x: -100, y: 100)
 		let p1 = CGPoint(x: 100, y: -100)
 
-		let pts = curve.values(p0, p1, count: 5)
+		let pts = curve.values(count: 5, from: p0, through: p1)
 		XCTAssertEqual(5, pts.count)
 		XCTAssertEqual(pts[0], CGPoint(x: -100, y: 100))
 		XCTAssertEqual(pts[1], CGPoint(x: -50, y: 50))
@@ -391,19 +391,19 @@ final class EasingFunctionsKitTests: XCTestCase {
 
 		XCTAssertEqual(
 			CGPoint(x: -100, y: 100),
-			curve.value(p0, p1, at: 0.0)
+			curve.value(at: 0.0, from: p0, through: p1)
 		)
 		XCTAssertEqual(
 			CGPoint(x: 100, y: -100),
-			curve.value(p0, p1, at: 1.0)
+			curve.value(at: 1.0, from: p0, through: p1)
 		)
 		XCTAssertEqual(
 			CGPoint(x: 0, y: 0),
-			curve.value(p0, p1, at: 0.5)
+			curve.value(at: 0.5, from: p0, through: p1)
 		)
 		XCTAssertEqual(
 			CGPoint(x: -50, y: 50),
-			curve.value(p0, p1, at: 0.25)
+			curve.value(at: 0.25, from: p0, through: p1)
 		)
 	}
 
@@ -478,7 +478,7 @@ final class EasingFunctionsKitTests: XCTestCase {
 
 			markdownText += "| <img src='\(link2)' width='150' /> "
 
-			let v = curve.values(CGPoint(x: 0, y: 20), CGPoint(x: 100, y: 79), count: 25)
+			let v = curve.values(count: 25, from: CGPoint(x: 0, y: 20), through: CGPoint(x: 100, y: 79))
 
 			let bm = try Bitmap(size: sz) { ctx in
 				ctx.savingGState { ctx in
@@ -507,6 +507,107 @@ final class EasingFunctionsKitTests: XCTestCase {
 			let image = try XCTUnwrap(bm.image)
 			let data = try image.representation.png()
 			let filename = "lerp-\(curve.title).png"
+			let link = try imageStore.store(data, filename: filename)
+
+			markdownText += "| <img src='\(link)' width='150' /> |\n"
+		}
+	}
+
+	func testInterpolatedRect() throws {
+		let outputFolder = try! testResultsContainer.subfolder(with: "rect-interpolation")
+		let imagesFolder = try! outputFolder.subfolder(with: "images")
+		let imageStore = ImageOutput(imagesFolder)
+		var markdownText = ""
+
+		defer {
+			try! outputFolder.write(markdownText, to: "rect-interpolation.md", encoding: .utf8)
+		}
+
+
+		var allCurves = AllEasingCurves
+		allCurves.append(contentsOf: [
+			Linear(values: [0.0, 0.5, 1.0]),
+			Linear(values: [0.0, 0.25, 0.25, 1.0]),
+			Linear(values: [0.0, 0.125, 0.25, 1.0]),
+			Linear(values: [0.0, 1.0, 0.0, 1.0]),
+			Linear(values: [0.0, 0.1, 0.5, 0.9, 1.0]),
+		])
+
+		allCurves.append(contentsOf: [
+			Jump(.jumpStart, steps: 2),
+			Jump(.jumpEnd, steps: 4),
+			Jump(.jumpNone, steps: 5),
+			Jump(.jumpBoth, steps: 3),
+		])
+
+		allCurves.append(contentsOf: [
+			CubicBezier(x1: 0.1, y1: 0.6, x2: 0.7, y2: 0.2),
+			CubicBezier(x1: 0.3, y1: 0.2, x2: 0.2, y2: 1.4),
+		])
+
+		markdownText += "|  name  | curve |  rectinterp  |\n"
+		markdownText += "|--------|-------|--------------|\n"
+
+		let r0 = CGRect(x: 0, y: 0, width: 200, height: 200)
+		let r1 = CGRect(x: 120, y: 120, width: 40, height: 40)
+
+		let c0 = CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 0.8)
+		let c1 = CGColor(srgbRed: 0, green: 0, blue: 1, alpha: 0.8)
+
+		let steps = 30
+		let rect = CGRect(x: 0, y: 0, width: 200, height: 200)
+		let sz = rect.size
+
+		for curve in allCurves {
+
+			markdownText += "| \(curve.title) "
+
+			do {
+				let bm2 = try Bitmap(size: sz) { ctx in
+					ctx.savingGState { ctx in
+						ctx.setFillColor(CGColor(gray: 0.9, alpha: 1))
+						ctx.fill([rect])
+						ctx.setStrokeColor(CGColor(gray: 0.4, alpha: 1))
+						ctx.setLineWidth(0.5)
+						ctx.stroke(rect.insetBy(dx: 0.5, dy: 0.5))
+
+						ctx.setStrokeColor(CGColor(gray: 0.4, alpha: 1))
+						ctx.setLineWidth(0.5)
+						ctx.stroke(CGRect(x: 24.5, y: 24.5, width: 151, height: 151))
+					}
+
+					ctx.savingGState { ctx in
+						let pth = curve.cgPath(size: CGSize(width: 150, height: 150), steps: 25)
+						ctx.translateBy(x: 25, y: 25)
+						ctx.addPath(pth)
+						ctx.setStrokeColor(CGColor(srgbRed: 1, green: 0, blue: 0, alpha: 1))
+						ctx.strokePath()
+					}
+				}
+
+				let image2 = try XCTUnwrap(bm2.image)
+				let data2 = try image2.representation.png()
+				let filename2 = "rectinterpolate-\(curve.title)-curve.png"
+				let link2 = try imageStore.store(data2, filename: filename2)
+
+				markdownText += "| <img src='\(link2)' width='150' /> "
+			}
+
+			let v = unitMappedCountValues(steps)
+
+			let bm = try Bitmap(size: sz) { ctx in
+				(0 ..< steps).forEach { index in
+					let t = v[index]
+					let v = curve.value(at: t, from: r0, through: r1)
+					ctx.setStrokeColor((try? curve.value(at: t, from: c0, through: c1)) ?? CGColor(gray: 0, alpha: 1))
+					ctx.setLineWidth(0.5)
+					ctx.stroke(v)
+				}
+			}
+
+			let image = try XCTUnwrap(bm.image)
+			let data = try image.representation.png()
+			let filename = "interpolation-\(curve.title).png"
 			let link = try imageStore.store(data, filename: filename)
 
 			markdownText += "| <img src='\(link)' width='150' /> |\n"

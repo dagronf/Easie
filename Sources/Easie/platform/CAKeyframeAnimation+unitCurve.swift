@@ -37,7 +37,7 @@ public extension UnitCurve {
 		keyframeCount: Int = 60
 	) -> CAKeyframeAnimation {
 		let a = CAKeyframeAnimation(keyPath: keyPath)
-		a.values = self.values(from ... through, count: keyframeCount)
+		a.values = self.values(count: keyframeCount, in: from ... through)
 			.map { NSNumber(value: $0) }
 		return a
 	}
@@ -56,7 +56,7 @@ public extension UnitCurve {
 		keyframeCount: Int = 60
 	) -> CAKeyframeAnimation {
 		let a = CAKeyframeAnimation(keyPath: keyPath)
-		a.values = self.values(from, through, count: keyframeCount)
+		a.values = self.values(count: keyframeCount, from: from, through: through)
 			.map {
 				#if os(macOS)
 				NSValue(point: $0)
@@ -81,7 +81,7 @@ public extension UnitCurve {
 		keyframeCount: Int = 60
 	) -> CAKeyframeAnimation {
 		let a = CAKeyframeAnimation(keyPath: keyPath)
-		a.values = self.values(from, through, count: keyframeCount)
+		a.values = self.values(count: keyframeCount, from: from, through: through)
 			.map {
 				#if os(macOS)
 				NSValue(size: $0)
